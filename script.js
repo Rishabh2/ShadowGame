@@ -107,22 +107,22 @@ function processCanvas() {
                 tempCanvas.width = imageW;
                 tempCanvas.height = imageH;
                 const tempContext = tempCanvas.getContext('2d');
-                /* tempContext.drawImage(image, 0, 0, imageW, imageH); // Pre-scale image data
+                tempContext.drawImage(image, 0, 0, imageW, imageH); // Pre-scale image data
                 let imgd = tempContext.getImageData(0, 0, imageW, imageH);
 
                 for (let i = 0; i < imgd.data.length; i += 4) {
                     imgd.data[i + 0] = 0;
                     imgd.data[i + 1] = 0;
                     imgd.data[i + 2] = 0;
-                    imgd.data[i + 3] = 255 * Math.round(imgd.data[i + 3] / 255);
+                    imgd.data[i + 3] = 255 * Math.floor(imgd.data[i + 3] / 255);
                 }
-                ctx.putImageData(imgd, imageX, imageY); */
-                tempContext.fillStyle = "rgba(0,0,0,0)";
+                ctx.putImageData(imgd, imageX, imageY);
+                /* tempContext.fillStyle = "rgba(0,0,0,0)";
                 tempContext.fillRect(0, 0, imageW, imageH);
                 tempContext.globalCompositeOperation = 'destination-in';
                 tempContext.drawImage(image, 0, 0, imageW, imageH);
                 imageData = tempContext.getImageData(0, 0, imageW, imageH);
-                ctx.putImageData(imageData, imageX, imageY);
+                ctx.putImageData(imageData, imageX, imageY); */
             }
             else if (characterObject.state == "Background") {
                 // Use a temp canvas to convert the image appropriately
