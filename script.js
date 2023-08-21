@@ -37,9 +37,7 @@ file.onchange = () => {
                 const iVer = document.getElementById(`${fr.fileName}_ver`);
                 iVer.addEventListener("input", (event) => {updateImageVertical(event, fr.fileName)});
 
-                const newImage = new Image();
-                newImage.src = fr.result;
-                characterImages[fr.fileName] = { image: newImage, scale: 100, hor: 0, ver: 0 };
+                characterImages[fr.fileName] = { image: fr.result, scale: 100, hor: 0, ver: 0 };
             }
             fr.readAsDataURL(fileToLoad);
         }
@@ -74,6 +72,10 @@ function processCanvas() {
     ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
     for (let character in characterImages) {
         const characterObject = characterImages[character];
-        ctx.drawImage(characterObject.image, characterObject.hor, characterObject.ver);
+        const image = new Image();
+        image.onload = () => {
+            ctx.drawImage(image, characterObject.hor, characterObject.ver);
+        }
+        image.src = characterObject.image;   
     }
 }
