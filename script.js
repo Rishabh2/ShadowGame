@@ -116,7 +116,8 @@ function processCanvas() {
                     imgd.data[i + 2] = 0;
                     imgd.data[i + 3] = 255 * Math.floor(imgd.data[i + 3] / 255);
                 }
-                ctx.putImageData(imgd, imageX, imageY);
+                tempContext.putImageData(imgd, 0, 0);
+                ctx.drawImage(tempCanvas, imageX, imageY);
                 /* tempContext.fillStyle = "rgba(0,0,0,0)";
                 tempContext.fillRect(0, 0, imageW, imageH);
                 tempContext.globalCompositeOperation = 'destination-in';
