@@ -9,7 +9,7 @@ file.onchange = function (e) {
     if (FileReader && files && files.length) {
         for (var fileToLoad of files) {
             var fr = new FileReader();
-            fr.onload = function () {
+            fr.onload = () => {
                 var row = characterTable.insertRow();
                 var cName = row.insertCell();
                 var cScale = row.insertCell();
@@ -18,6 +18,8 @@ file.onchange = function (e) {
                 var cState = row.insertCell();
 
                 // Populate each cell with the associate elements.
+
+                console.log(fr.fileName);
                 cName.innerHTML = fr.fileName;
                 cScale.innerHTML = "scale";
                 cHor.innerHTML = "hor";
@@ -25,7 +27,6 @@ file.onchange = function (e) {
                 cState.innerHTML = "state";
             }
             fr.fileName = fileToLoad.name;
-            console.log(fileToLoad.name);
             fr.readAsDataURL(fileToLoad);
         }
         file.value = "";
