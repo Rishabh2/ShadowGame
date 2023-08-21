@@ -28,7 +28,7 @@ file.onchange = () => {
                 cScale.innerHTML = `<input type="range" min="0" max="200" value="100" class="slider" id="${fr.fileName}_scale">`;
                 cHor.innerHTML = `<input type="range" min="0" max="100" value="50" class="slider" id="${fr.fileName}_hor">`;
                 cVer.innerHTML = `<input type="range" min="0" max="100" value="50" class="slider" id="${fr.fileName}_ver">`;
-                cState.innerHTML = "state";
+                cState.innerHTML = `<input type="radio" name="${fr.fileName}_state" value="Reveal" id="${fr.fileName}_rev"><label for="${fr.fileName}_rev">Reveal</label><input type="radio" name="${fr.fileName}_state" value="Shadow" id="${fr.fileName}_sha"><label for="${fr.fileName}_sha">Shadow</label><input type="radio" name="${fr.fileName}_state" value="Background" id="${fr.fileName}_bgd"><label for="${fr.fileName}_bgd">Background</label>`;
 
                 const iScale = document.getElementById(`${fr.fileName}_scale`);
                 iScale.addEventListener("input", (event) => { updateImageScale(event, fr.fileName) });
@@ -36,8 +36,12 @@ file.onchange = () => {
                 iHor.addEventListener("input", (event) => { updateImageHorizontal(event, fr.fileName) });
                 const iVer = document.getElementById(`${fr.fileName}_ver`);
                 iVer.addEventListener("input", (event) => { updateImageVertical(event, fr.fileName) });
+                const iStates = document.getElementsByName(`${fr.fileName}_state`);
+                for (let iState of iStates) {
+                    iState.addEventListener("click", (event) => { updateImageState(event, fr.fileName) });
+                }
 
-                characterImages[fr.fileName] = { image: fr.result, scale: 100, hor: 0, ver: 0 };
+                characterImages[fr.fileName] = { image: fr.result, scale: 100, hor: 50, ver: 50, state: "Reveal" };
             }
             fr.readAsDataURL(fileToLoad);
         }
@@ -67,6 +71,10 @@ function updateImageVertical(e, name) {
     characterImages[name].ver = e.target.value;
     processCanvas();
 }
+function updateImageState(e, name) {
+    characterImages[name].state = e.target.value;
+    processCanvas();
+}
 
 function processCanvas() {
     const ctx = canvas.getContext('2d');
@@ -74,6 +82,7 @@ function processCanvas() {
     for (let character in characterImages) {
         const characterObject = characterImages[character];
         const image = new Image();
+        image.className = characterObject.state;
         image.onload = () => {
             image.crossOrigin = "Anonymous";
             ctx.drawImage(image,
