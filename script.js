@@ -31,11 +31,11 @@ file.onchange = () => {
                 cState.innerHTML = "state";
 
                 const iScale = document.getElementById(`${fr.fileName}_scale`);
-                iScale.addEventListener("input", updateImageScale);
+                iScale.addEventListener("input", (event) => {updateImageScale(event, fr.fileName)});
                 const iHor = document.getElementById(`${fr.fileName}_hor`);
-                iHor.addEventListener("input", updateImageHorizontal);
+                iHor.addEventListener("input", (event) => {updateImageHorizontal(event, fr.fileName)});
                 const iVer = document.getElementById(`${fr.fileName}_ver`);
-                iVer.addEventListener("input", updateImageVertical);
+                iVer.addEventListener("input", (event) => {updateImageVertical(event, fr.fileName)});
 
                 const newImage = new Image();
                 newImage.src = fr.result;
@@ -55,18 +55,18 @@ file.onchange = () => {
 
 };
 
-function updateImageScale(e) {
-    characterImages[e.target.id.slice(0, -4)].scale = e.target.value;
+function updateImageScale(e, name) {
+    characterImages[name].scale = e.target.value;
     processCanvas();
 }
 
-function updateImageHorizontal(e) {
-    characterImages[e.target.id.slice(0, -4)].hor = e.target.value;
+function updateImageHorizontal(e, name) {
+    characterImages[name].hor = e.target.value;
     processCanvas();
 }
 
-function updateImageVertical(e) {
-    characterImages[e.target.id.slice(0, -4)].ver = e.target.value;
+function updateImageVertical(e, name) {
+    characterImages[name].ver = e.target.value;
     processCanvas();
 }
 
