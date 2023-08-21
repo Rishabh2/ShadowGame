@@ -90,6 +90,7 @@ function truncate(num) {
 function processCanvas() {
     const ctx = canvas.getContext('2d');
     ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.globalCompositeOperation = "source-over";
     for (let character in characterImages) {
         const characterObject = characterImages[character];
         const image = new Image();
@@ -114,7 +115,7 @@ function processCanvas() {
                     imgd.data[i + 0] = 0;
                     imgd.data[i + 1] = 0;
                     imgd.data[i + 2] = 0;
-                    imgd.data[i + 3] = 255 * Math.round(imgd.data[i+3] / 255);
+                    imgd.data[i + 3] = 255 * Math.round(imgd.data[i + 3] / 255);
                 }
                 ctx.putImageData(imgd, imageX, imageY);
             }
@@ -132,7 +133,7 @@ function processCanvas() {
                     imgd.data[i + 0] = truncate(F * imgd.data[i + 0] - 128) + 128;
                     imgd.data[i + 1] = truncate(F * imgd.data[i + 1] - 128) + 128;
                     imgd.data[i + 2] = truncate(F * imgd.data[i + 2] - 128) + 128;
-                    imgd.data[i + 3] = 255 * Math.round(imgd.data[i+3] / 255);
+                    imgd.data[i + 3] = 255 * Math.round(imgd.data[i + 3] / 255);
                 }
                 ctx.putImageData(imgd, imageX, imageY);
             }
