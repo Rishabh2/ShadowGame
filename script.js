@@ -93,7 +93,7 @@ function processCanvas() {
                 tempContext.drawImage(image, 0, 0);
                 let imgd = tempContext.getImageData(0, 0, image.width, image.height);
 
-                for (let i = 0; i < imageData.data.length; i += 4) {
+                for (let i = 0; i < imgD.data.length; i += 4) {
                     if (imgd.data[i + 3] < 5) { // buffer check for pixel A value
                         imgd.data[i + 0] = 0;
                         imgd.data[i + 1] = 0;
