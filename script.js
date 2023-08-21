@@ -2,9 +2,15 @@ const file = document.getElementById("fileIn"); // Add file button
 const characterTable = document.getElementById("characterTable");
 const canvas = document.getElementById("canvas"); // Canvas
 
-document.getElementById("Shadow_All").addEventListener("click", () => {updateChars("Shadow")});
-document.getElementById("Reveal_All").addEventListener("click", () => {updateChars("Reveal")});
-document.getElementById("Background_All").addEventListener("click", () => {updateChars("Background")});
+document.getElementById("Shadow_All").addEventListener("click", () => { updateChars("Shadow") });
+document.getElementById("Reveal_All").addEventListener("click", () => { updateChars("Reveal") });
+document.getElementById("Background_All").addEventListener("click", () => { updateChars("Background") });
+document.getElementById("Copy").addEventListener("click", () => {
+    canvas.toBlob(function (blob) {
+        const item = new ClipboardItem({ "image/png": blob });
+        navigator.clipboard.write([item]);
+    });
+})
 
 let characterImages = {};
 
@@ -91,11 +97,11 @@ function truncate(num) {
     return num;
 }
 
-function updateChars(value){
+function updateChars(value) {
     // Update the characters and radio values
-    for (let character in characterImages){
+    for (let character in characterImages) {
         characterImages[character].state = value;
-        document.getElementById(`${character}_${value.slice(0,3).toLowerCase()}`).checked = true;
+        document.getElementById(`${character}_${value.slice(0, 3).toLowerCase()}`).checked = true;
     }
     processCanvas();
 }
@@ -107,7 +113,7 @@ function processCanvas() {
     for (let character in characterImages) {
         sortedChars.push(characterImages[character]);
     }
-    sortedChars.sort((a,b) => {return b.state.length - a.state.length});
+    sortedChars.sort((a, b) => { return b.state.length - a.state.length });
     for (let characterObject of sortedChars) {
         const image = new Image();
 
