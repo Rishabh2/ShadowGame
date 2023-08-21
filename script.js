@@ -9,6 +9,7 @@ file.onchange = function (e) {
     if (FileReader && files && files.length) {
         for (var fileToLoad of files) {
             var fr = new FileReader();
+            fr.fileName = fileToLoad.name;
             fr.onload = () => {
                 var row = characterTable.insertRow();
                 var cName = row.insertCell();
@@ -26,7 +27,6 @@ file.onchange = function (e) {
                 cVer.innerHTML = "ver";
                 cState.innerHTML = "state";
             }
-            fr.fileName = fileToLoad.name;
             fr.readAsDataURL(fileToLoad);
         }
         file.value = "";
