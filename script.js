@@ -83,18 +83,22 @@ function processCanvas() {
     for (let character in characterImages) {
         const characterObject = characterImages[character];
         const image = new Image();
+        const imageX = characterObject.hor * canvas.width / 100;
+        const imageY = characterObject.ver * canvas.height / 100;
+        const imageW = image.width * characterObject.scale / 100;
+        const imageH = image.height * characterObject.scale / 100;
+
         image.onload = () => {
             image.crossOrigin = "Anonymous";
             if (characterObject.state == "Shadow") {
                 console.log("Shadow image", character, characterObject);
                 // Use a temp canvas to convert the image appropriately
                 const tempCanvas = document.createElement("canvas");
+                tempCanvas.width = imageW;
+                tempCanvas.height = imageH;
                 const tempContext = tempCanvas.getContext('2d');
-                tempContext.drawImage(image, 0, 0,
-                    image.width * characterObject.scale / 100,
-                    image.height * characterObject.scale / 100); // Pre-scale image data
-                let imgd = tempContext.getImageData(0, 0, image.width * characterObject.scale / 100,
-                image.height * characterObject.scale / 100);
+                tempContext.drawImage(image, 0, 0, imageW, imageH); // Pre-scale image data
+                let imgd = tempContext.getImageData(0, 0, imageW, imageH);
 
                 for (let i = 0; i < imgd.data.length; i += 4) {
                     console.log(imgd.data[i], imgd.data[i+1], imgd.data[i+2], imgd.data[i+3]);
@@ -104,16 +108,10 @@ function processCanvas() {
                         imgd.data[i + 2] = 0;
                     }
                 }
-                ctx.putImageData(imgd,
-                    characterObject.hor * canvas.width / 100,
-                    characterObject.ver * canvas.height / 100);
+                ctx.putImageData(imgd, imageX, imageY);
             }
             else {
-                ctx.drawImage(image,
-                    characterObject.hor * canvas.width / 100,
-                    characterObject.ver * canvas.height / 100,
-                    image.width * characterObject.scale / 100,
-                    image.height * characterObject.scale / 100);
+                ctx.drawImage(image, imageX, imageY, imageW, imageH);
             }
         }
         image.src = characterObject.image;
