@@ -83,18 +83,36 @@ function processCanvas() {
     for (let character in characterImages) {
         const characterObject = characterImages[character];
         const image = new Image();
-        if (characterObject.state == "Shadow") {
-            console.log("Shadow image", character, characterObject);
-            image.style.filter = "contrast(0%) brightness(50%)";
-            image.style["-webkit-filter"] = "contrast(0%) brightness(50%)";
-        }
         image.onload = () => {
             image.crossOrigin = "Anonymous";
-            ctx.drawImage(image,
-                characterObject.hor * canvas.width / 100,
-                characterObject.ver * canvas.height / 100,
-                image.width * characterObject.scale / 100,
-                image.height * characterObject.scale / 100);
+            if (characterObject.state == "Shadow") {
+                console.log("Shadow image", character, characterObject);
+                // Use a temp canvas to convert the image appropriately
+                const tempCanvas = document.createElement("canvas");
+                const tempContext = tempCanvas.getContext('2d');
+                tempContext.drawImage(image);
+                let imgd = tempContext.getImageData(0, 0, image.width, image.height);
+
+                for (let i = 0; i < imageData.data.length; i += 4) {
+                    if (imgd.data[i + 3] < 5) { // buffer check for pixel A value
+                        imgd.data[i + 0] = 0;
+                        imgd.data[i + 1] = 0;
+                        imgd.data[i + 2] = 0;
+                    }
+                }
+                ctx.putImageData(imgd,
+                    characterObject.hor * canvas.width / 100,
+                    characterObject.ver * canvas.height / 100,
+                    image.width * characterObject.scale / 100,
+                    image.height * characterObject.scale / 100);
+            }
+            else {
+                ctx.drawImage(image,
+                    characterObject.hor * canvas.width / 100,
+                    characterObject.ver * canvas.height / 100,
+                    image.width * characterObject.scale / 100,
+                    image.height * characterObject.scale / 100);
+            }
         }
         image.src = characterObject.image;
     }
