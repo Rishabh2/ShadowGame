@@ -1,9 +1,8 @@
 var file = document.getElementById("fileIn"); // Add file button
 var characterTable = document.getElementById("characterTable");
 
-file.onchange = function (e) {
-    var tgt = e.target || window.event.srcElement;
-    var files = tgt.files;
+file.onchange = () => {
+    const files = file.files;
 
     // FileReader support
     if (FileReader && files && files.length) {
