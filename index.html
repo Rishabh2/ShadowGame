@@ -1,31 +1,42 @@
 <html>
+
 <head>
     <style>
-body {
-    background: #a8a4a4;
-}
-canvas {
-    margin:5;
-    image-rendering: optimizeSpeed;
-    image-rendering: -moz-crisp-edges;
-    image-rendering: -webkit-optimize-contrast;
-    image-rendering: -o-crisp-edges;
-    image-rendering: crisp-edges;
-    -ms-interpolation-mode: nearest-neighbor;
-    border: 1px solid black;
-}
+        body {
+            background: #a8a4a4;
+        }
 
-.container
-{
-  background: #ffffff;
-  position:relative;
-  margin:5 auto;
-}
+        canvas {
+            margin: 5;
+            image-rendering: optimizeSpeed;
+            image-rendering: -moz-crisp-edges;
+            image-rendering: -webkit-optimize-contrast;
+            image-rendering: -o-crisp-edges;
+            image-rendering: crisp-edges;
+            -ms-interpolation-mode: nearest-neighbor;
+            border: 1px solid black;
+        }
 
-table, th, td {
-  border: 1px solid;
-  border-collapse: collapse;
-}
+        .container {
+            background: #ffffff;
+            position: fixed;
+            margin: 5% auto;
+            float: left;
+        }
+
+        .editing {
+            margin: 5% auto;
+            float: right;
+            overflow-y: scroll;
+            position: fixed;
+        }
+
+        table,
+        th,
+        td {
+            border: 1px solid;
+            border-collapse: collapse;
+        }
     </style>
     <h1>Shadow Game: V1.11</h1>
 </head>
@@ -35,25 +46,25 @@ table, th, td {
 
 <body>
     <div>
-    <center>
-    <div class="container">
-        <canvas id="canvas" width="800" height="600"></canvas>
-    </div>
-    <div>
-        <table id="characterTable">
-            <tr>
-                <th>Character</th>
-                <th>Scale</th>
-                <th>Horizontal Position</th>
-                <th>Vertical Position</th>
-                <th>State</th>
-            </tr>
-        </table>
-    </div>
-    <div>
-        <input type="file" name="media_file" id="fileIn" accept="image/*" multiple><br>
-    </div>
-    </center>
+        <div class="container">
+            <canvas id="canvas" width="800" height="600"></canvas>
+        </div>
+        <div class="editing">
+            <div>
+                <table id="characterTable">
+                    <tr>
+                        <th>Character</th>
+                        <th>Scale</th>
+                        <th>Horizontal Position</th>
+                        <th>Vertical Position</th>
+                        <th>State</th>
+                    </tr>
+                </table>
+            </div>
+            <div>
+                <input type="file" name="media_file" id="fileIn" accept="image/*" multiple><br>
+            </div>
+        </div>
     </div>
     <script src="script.js"></script>
 </body>
