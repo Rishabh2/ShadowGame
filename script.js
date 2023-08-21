@@ -117,12 +117,12 @@ function processCanvas() {
                     imgd.data[i + 3] = 255 * Math.round(imgd.data[i + 3] / 255);
                 }
                 ctx.putImageData(imgd, imageX, imageY); */
-                tempContext.fillStyle = "rgb(0,0,0)";
+                tempContext.fillStyle = "rgba(0,0,0,0)";
                 tempContext.fillRect(0, 0, imageW, imageH);
                 tempContext.globalCompositeOperation = 'destination-in';
                 tempContext.drawImage(image, 0, 0, imageW, imageH);
                 imageData = tempContext.getImageData(0, 0, imageW, imageH);
-                ctx.putImageData(imageData, 0, 0);
+                ctx.putImageData(imageData, imageX, imageY);
             }
             else if (characterObject.state == "Background") {
                 // Use a temp canvas to convert the image appropriately
