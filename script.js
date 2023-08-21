@@ -6,20 +6,21 @@ file.onchange = () => {
 
     // FileReader support
     if (FileReader && files && files.length) {
-        for (var fileToLoad of files) {
-            var fr = new FileReader();
+        for (let fileToLoad of files) {
+            const fr = new FileReader();
             fr.fileName = fileToLoad.name;
+            console.log("Read name", fileToLoad.name, fr.fileName);
             fr.onload = () => {
-                var row = characterTable.insertRow();
-                var cName = row.insertCell();
-                var cScale = row.insertCell();
-                var cHor = row.insertCell();
-                var cVer = row.insertCell();
-                var cState = row.insertCell();
+                const row = characterTable.insertRow();
+                const cName = row.insertCell();
+                const cScale = row.insertCell();
+                const cHor = row.insertCell();
+                const cVer = row.insertCell();
+                const cState = row.insertCell();
 
                 // Populate each cell with the associate elements.
 
-                console.log(fr.fileName);
+                console.log("Create Cells", fr.fileName);
                 cName.innerHTML = fr.fileName;
                 cScale.innerHTML = "scale";
                 cHor.innerHTML = "hor";
