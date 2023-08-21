@@ -83,13 +83,14 @@ function processCanvas() {
     for (let character in characterImages) {
         const characterObject = characterImages[character];
         const image = new Image();
-        const imageX = characterObject.hor * canvas.width / 100;
-        const imageY = characterObject.ver * canvas.height / 100;
-        const imageW = image.width * characterObject.scale / 100;
-        const imageH = image.height * characterObject.scale / 100;
 
         image.onload = () => {
             image.crossOrigin = "Anonymous";
+            const imageX = characterObject.hor * canvas.width / 100;
+            const imageY = characterObject.ver * canvas.height / 100;
+            const imageW = image.width * characterObject.scale / 100;
+            const imageH = image.height * characterObject.scale / 100;
+
             if (characterObject.state == "Shadow") {
                 console.log("Shadow image", character, characterObject);
                 // Use a temp canvas to convert the image appropriately
@@ -101,7 +102,7 @@ function processCanvas() {
                 let imgd = tempContext.getImageData(0, 0, imageW, imageH);
 
                 for (let i = 0; i < imgd.data.length; i += 4) {
-                    console.log(imgd.data[i], imgd.data[i+1], imgd.data[i+2], imgd.data[i+3]);
+                    console.log(imgd.data[i], imgd.data[i + 1], imgd.data[i + 2], imgd.data[i + 3]);
                     if (imgd.data[i + 3] < 5) { // buffer check for pixel A value
                         imgd.data[i + 0] = 0;
                         imgd.data[i + 1] = 0;
