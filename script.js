@@ -7,26 +7,25 @@ file.onchange = function (e) {
 
     // FileReader support
     if (FileReader && files && files.length) {
-        var fr = new FileReader();
-        fr.onload = function () {
-            var fileResult = fr.result;
+        for (const fileToLoad of files) {
+            var fr = new FileReader();
+            fr.onload = function () {
+                var row = characterTable.insertRow();
+                var cName = row.insertCell();
+                var cThumb = row.insertCell();
+                var cHor = row.insertCell();
+                var cVer = row.insertCell();
+                var cState = row.insertCell();
 
-            var row = characterTable.insertRow();
-            var cName = row.insertCell();
-            var cThumb = row.insertCell();
-            var cHor = row.insertCell();
-            var cVer = row.insertCell();
-            var cState = row.insertCell();
-
-            // Populate each cell with the associate elements.
-            cName.innerHTML = fileResult.name;
-            cThumb.innerHTML = "thumb";
-            cHor.innerHTML = "hor";
-            cVer.innerHTML = "ver";
-            cState.innerHTML = "state";
-        }
-        for (i = 0; i < files.length; i++) {
-            fr.readAsDataURL(files[i]);
+                // Populate each cell with the associate elements.
+                cName.innerHTML = fr.fileName;
+                cThumb.innerHTML = "thumb";
+                cHor.innerHTML = "hor";
+                cVer.innerHTML = "ver";
+                cState.innerHTML = "state";
+            }
+            fr.fileName = fileToLoad.name;
+            fr.readAsDataURL(fileToLoad);
         }
         file.value = "";
     }
