@@ -26,8 +26,8 @@ file.onchange = () => {
                 console.log("Create Cells", fr.fileName);
                 cName.innerHTML = fr.fileName;
                 cScale.innerHTML = `<input type="range" min="0" max="200" value="100" class="slider" id="${fr.fileName}_scale">`;
-                cHor.innerHTML = `<input type="range" min="-100" max="100" value="0" class="slider" id="${fr.fileName}_hor">`;
-                cVer.innerHTML = `<input type="range" min="-100" max="100" value="0" class="slider" id="${fr.fileName}_ver">`;
+                cHor.innerHTML = `<input type="range" min="0" max="100" value="50" class="slider" id="${fr.fileName}_hor">`;
+                cVer.innerHTML = `<input type="range" min="0" max="100" value="50" class="slider" id="${fr.fileName}_ver">`;
                 cState.innerHTML = "state";
 
                 const iScale = document.getElementById(`${fr.fileName}_scale`);
@@ -77,8 +77,8 @@ function processCanvas() {
         image.onload = () => {
             image.crossOrigin = "Anonymous";
             ctx.drawImage(image,
-                characterObject.hor,
-                characterObject.ver,
+                characterObject.hor * canvas.width,
+                characterObject.ver * canvas.height,
                 image.width * characterObject.scale / 100,
                 image.height * characterObject.scale / 100);
         }
