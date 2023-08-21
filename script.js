@@ -25,9 +25,10 @@ file.onchange = function (e) {
             cVer.innerHTML = "ver";
             cState.innerHTML = "state";
         }
-        for (var newfile in files) {
-            fr.readAsDataURL(newFile);
+        for (i = 0; i < files.length; i++) {
+            fr.readAsDataURL(files[i]);
         }
+        file.value = "";
     }
 
     // Not supported
