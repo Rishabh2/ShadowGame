@@ -103,7 +103,7 @@ function processCanvas() {
 
                 for (let i = 0; i < imgd.data.length; i += 4) {
                     console.log(imgd.data[i], imgd.data[i + 1], imgd.data[i + 2], imgd.data[i + 3]);
-                    if (imgd.data[i + 3] < 5) { // buffer check for pixel A value
+                    if (imgd.data[i + 3] > 5) { // buffer check for pixel A value
                         imgd.data[i + 0] = 0;
                         imgd.data[i + 1] = 0;
                         imgd.data[i + 2] = 0;
