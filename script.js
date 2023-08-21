@@ -82,7 +82,10 @@ function processCanvas() {
     for (let character in characterImages) {
         const characterObject = characterImages[character];
         const image = new Image();
-        image.className = characterObject.state;
+        if (characterObject.state == "Shadow") {
+            image.style.filter = "contrast(0%)";
+            image.style["-webkit-filter"] = "contrast(0%)";
+        }
         image.onload = () => {
             image.crossOrigin = "Anonymous";
             ctx.drawImage(image,
