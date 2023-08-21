@@ -120,7 +120,7 @@ function processCanvas() {
                 tempContext.fillStyle = "rgb(0,0,0)";
                 tempContext.fillRect(0, 0, imageW, imageH);
                 tempContext.globalCompositeOperation = 'destination-in';
-                tempContext.drawImage(image, 0, 0);
+                tempContext.drawImage(image, 0, 0, imageW, imageH);
                 imageData = tempContext.getImageData(0, 0, imageW, imageH);
                 ctx.putImageData(imageData, 0, 0);
             }
