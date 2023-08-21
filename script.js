@@ -90,7 +90,7 @@ function processCanvas() {
                 // Use a temp canvas to convert the image appropriately
                 const tempCanvas = document.createElement("canvas");
                 const tempContext = tempCanvas.getContext('2d');
-                tempContext.drawImage(image);
+                tempContext.drawImage(image, 0, 0);
                 let imgd = tempContext.getImageData(0, 0, image.width, image.height);
 
                 for (let i = 0; i < imageData.data.length; i += 4) {
