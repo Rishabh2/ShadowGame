@@ -86,8 +86,8 @@ function processCanvas() {
         image.onload = () => {
             image.crossOrigin = "Anonymous";
             ctx.drawImage(image,
-                characterObject.hor * canvas.width,
-                characterObject.ver * canvas.height,
+                characterObject.hor * canvas.width / 100,
+                characterObject.ver * canvas.height / 100,
                 image.width * characterObject.scale / 100,
                 image.height * characterObject.scale / 100);
         }
