@@ -7,7 +7,7 @@ file.onchange = function (e) {
 
     // FileReader support
     if (FileReader && files && files.length) {
-        for (const fileToLoad of files) {
+        for (var fileToLoad of files) {
             var fr = new FileReader();
             fr.onload = function () {
                 var row = characterTable.insertRow();
@@ -25,6 +25,7 @@ file.onchange = function (e) {
                 cState.innerHTML = "state";
             }
             fr.fileName = fileToLoad.name;
+            console.log(fileToLoad.name);
             fr.readAsDataURL(fileToLoad);
         }
         file.value = "";
