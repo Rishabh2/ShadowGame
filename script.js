@@ -83,8 +83,9 @@ function processCanvas() {
         const characterObject = characterImages[character];
         const image = new Image();
         if (characterObject.state == "Shadow") {
-            image.style.filter = "contrast(0%)";
-            image.style["-webkit-filter"] = "contrast(0%)";
+            console.log("Shadow image", character, characterObject);
+            image.style.filter = "contrast(0%) brightness(50%)";
+            image.style["-webkit-filter"] = "contrast(0%) brightness(50%)";
         }
         image.onload = () => {
             image.crossOrigin = "Anonymous";
