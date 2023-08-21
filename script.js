@@ -73,6 +73,7 @@ function updateImageVertical(e, name) {
 }
 function updateImageState(e, name) {
     characterImages[name].state = e.target.value;
+    console.log("Updated State", e.target.value, e.target, e);
     processCanvas();
 }
 
