@@ -2,6 +2,10 @@ const file = document.getElementById("fileIn"); // Add file button
 const characterTable = document.getElementById("characterTable");
 const canvas = document.getElementById("canvas"); // Canvas
 
+document.getElementById("Shadow_All").addEventListener("click", () => {updateChars("Shadow")});
+document.getElementById("Reveal_All").addEventListener("click", () => {updateChars("Reveal")});
+document.getElementById("Background_All").addEventListener("click", () => {updateChars("Background")});
+
 let characterImages = {};
 
 file.onchange = () => {
@@ -28,7 +32,7 @@ file.onchange = () => {
                 cScale.innerHTML = `<input type="range" min="0" max="200" value="100" class="slider" id="${fr.fileName}_scale">`;
                 cHor.innerHTML = `<input type="range" min="0" max="100" value="50" class="slider" id="${fr.fileName}_hor">`;
                 cVer.innerHTML = `<input type="range" min="0" max="100" value="50" class="slider" id="${fr.fileName}_ver">`;
-                cState.innerHTML = `<input type="radio" name="${fr.fileName}_state" value="Reveal" id="${fr.fileName}_rev"><label for="${fr.fileName}_rev">Reveal</label><input type="radio" name="${fr.fileName}_state" value="Shadow" id="${fr.fileName}_sha"><label for="${fr.fileName}_sha">Shadow</label><input type="radio" name="${fr.fileName}_state" value="Background" id="${fr.fileName}_bgd"><label for="${fr.fileName}_bgd">Background</label>`;
+                cState.innerHTML = `<input type="radio" name="${fr.fileName}_state" value="Reveal" id="${fr.fileName}_rev" checked="checked"><label for="${fr.fileName}_rev">Reveal</label><br><input type="radio" name="${fr.fileName}_state" value="Shadow" id="${fr.fileName}_sha"><label for="${fr.fileName}_sha">Shadow</label><br><input type="radio" name="${fr.fileName}_state" value="Background" id="${fr.fileName}_bac"><label for="${fr.fileName}_bac">Background</label>`;
 
                 const iScale = document.getElementById(`${fr.fileName}_scale`);
                 iScale.addEventListener("input", (event) => { updateImageScale(event, fr.fileName) });
@@ -87,6 +91,15 @@ function truncate(num) {
     return num;
 }
 
+function updateChars(value){
+    // Update the characters and radio values
+    for (let character in characterImages){
+        characterImages[character].state = value;
+        document.getElementById(`${character}_${value.slice(0,3).toLowerCase()}`).checked = true;
+    }
+    processCanvas();
+}
+
 function processCanvas() {
     const ctx = canvas.getContext('2d');
     ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -118,12 +131,6 @@ function processCanvas() {
                 }
                 tempContext.putImageData(imgd, 0, 0);
                 ctx.drawImage(tempCanvas, imageX, imageY);
-                /* tempContext.fillStyle = "rgba(0,0,0,0)";
-                tempContext.fillRect(0, 0, imageW, imageH);
-                tempContext.globalCompositeOperation = 'destination-in';
-                tempContext.drawImage(image, 0, 0, imageW, imageH);
-                imageData = tempContext.getImageData(0, 0, imageW, imageH);
-                ctx.putImageData(imageData, imageX, imageY); */
             }
             else if (characterObject.state == "Background") {
                 // Use a temp canvas to convert the image appropriately
