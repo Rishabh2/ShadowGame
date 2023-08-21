@@ -32,7 +32,7 @@ file.onchange = () => {
                 cScale.innerHTML = `<input type="range" min="0" max="200" value="100" class="slider" id="${fr.fileName}_scale">`;
                 cHor.innerHTML = `<input type="range" min="0" max="100" value="50" class="slider" id="${fr.fileName}_hor">`;
                 cVer.innerHTML = `<input type="range" min="0" max="100" value="50" class="slider" id="${fr.fileName}_ver">`;
-                cState.innerHTML = `<input type="radio" name="${fr.fileName}_state" value="Reveal" id="${fr.fileName}_rev" checked="checked"><label for="${fr.fileName}_rev">Reveal</label><br><input type="radio" name="${fr.fileName}_state" value="Shadow" id="${fr.fileName}_sha"><label for="${fr.fileName}_sha">Shadow</label><br><input type="radio" name="${fr.fileName}_state" value="Background" id="${fr.fileName}_bac"><label for="${fr.fileName}_bac">Background</label>`;
+                cState.innerHTML = `<input type="radio" name="${fr.fileName}_state" value="Reveal" id="${fr.fileName}_rev" checked="checked"><label for="${fr.fileName}_rev">Reveal</label><br><input type="radio" name="${fr.fileName}_state" value="Shadowed" id="${fr.fileName}_sha"><label for="${fr.fileName}_sha">Shadow</label><br><input type="radio" name="${fr.fileName}_state" value="Background" id="${fr.fileName}_bac"><label for="${fr.fileName}_bac">Background</label>`;
 
                 const iScale = document.getElementById(`${fr.fileName}_scale`);
                 iScale.addEventListener("input", (event) => { updateImageScale(event, fr.fileName) });
@@ -103,8 +103,12 @@ function updateChars(value){
 function processCanvas() {
     const ctx = canvas.getContext('2d');
     ctx.clearRect(0, 0, canvas.width, canvas.height);
+    sortedChars = [];
     for (let character in characterImages) {
-        const characterObject = characterImages[character];
+        sortedChars.push(characterImages[character]);
+    }
+    sortedChars.sort((a,b) => {return b.state.length - a.state.length});
+    for (let characterObject of sortedChars) {
         const image = new Image();
 
         image.onload = () => {
@@ -114,7 +118,7 @@ function processCanvas() {
             const imageW = image.width * characterObject.scale / 100;
             const imageH = image.height * characterObject.scale / 100;
 
-            if (characterObject.state == "Shadow") {
+            if (characterObject.state == "Shadowed") {
                 // Use a temp canvas to convert the image appropriately
                 const tempCanvas = document.createElement("canvas");
                 tempCanvas.width = imageW;
