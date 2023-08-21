@@ -148,7 +148,8 @@ function processCanvas() {
                     imgd.data[i + 2] = truncate(F * imgd.data[i + 2] - 128) + 128;
                     imgd.data[i + 3] = 255 * Math.round(imgd.data[i + 3] / 255);
                 }
-                ctx.putImageData(imgd, imageX, imageY);
+                tempContext.putImageData(imgd, 0, 0);
+                ctx.drawImage(tempCanvas, imageX, imageY);
             }
             else {
                 ctx.drawImage(image, imageX, imageY, imageW, imageH);
