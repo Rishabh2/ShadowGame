@@ -127,7 +127,7 @@ function processCanvas() {
                 const tempContext = tempCanvas.getContext('2d');
                 tempContext.drawImage(image, 0, 0, imageW, imageH); // Pre-scale image data
                 let imgd = tempContext.getImageData(0, 0, imageW, imageH);
-                const C = -180;
+                const C = -100;
                 const F = 259 * (255 + C) / (255 * (259 - C));
                 for (let i = 0; i < imgd.data.length; i += 4) {
                     imgd.data[i + 0] = truncate(F * imgd.data[i + 0] - 128) + 128;
