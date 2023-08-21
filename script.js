@@ -114,6 +114,7 @@ function processCanvas() {
                     imgd.data[i + 0] = 0;
                     imgd.data[i + 1] = 0;
                     imgd.data[i + 2] = 0;
+                    imgd.data[i + 3] = 255 * Math.round(imgd.data[i+3] / 255);
                 }
                 ctx.putImageData(imgd, imageX, imageY);
             }
@@ -128,9 +129,10 @@ function processCanvas() {
                 const C = -180;
                 const F = 259 * (255 + C) / (255 * (259 - C));
                 for (let i = 0; i < imgd.data.length; i += 4) {
-                    imgd.data[i + 0] = truncate(factor * imgd.data[i + 0] - 128) + 128;
-                    imgd.data[i + 1] = truncate(factor * imgd.data[i + 1] - 128) + 128;
-                    imgd.data[i + 2] = truncate(factor * imgd.data[i + 2] - 128) + 128;
+                    imgd.data[i + 0] = truncate(F * imgd.data[i + 0] - 128) + 128;
+                    imgd.data[i + 1] = truncate(F * imgd.data[i + 1] - 128) + 128;
+                    imgd.data[i + 2] = truncate(F * imgd.data[i + 2] - 128) + 128;
+                    imgd.data[i + 3] = 255 * Math.round(imgd.data[i+3] / 255);
                 }
                 ctx.putImageData(imgd, imageX, imageY);
             }
