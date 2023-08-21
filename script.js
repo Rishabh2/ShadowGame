@@ -90,8 +90,11 @@ function processCanvas() {
                 // Use a temp canvas to convert the image appropriately
                 const tempCanvas = document.createElement("canvas");
                 const tempContext = tempCanvas.getContext('2d');
-                tempContext.drawImage(image, 0, 0);
-                let imgd = tempContext.getImageData(0, 0, image.width, image.height);
+                tempContext.drawImage(image, 0, 0,
+                    image.width * characterObject.scale / 100,
+                    image.height * characterObject.scale / 100); // Pre-scale image data
+                let imgd = tempContext.getImageData(0, 0, image.width * characterObject.scale / 100,
+                image.height * characterObject.scale / 100);
 
                 for (let i = 0; i < imgd.data.length; i += 4) {
                     if (imgd.data[i + 3] < 5) { // buffer check for pixel A value
@@ -102,9 +105,7 @@ function processCanvas() {
                 }
                 ctx.putImageData(imgd,
                     characterObject.hor * canvas.width / 100,
-                    characterObject.ver * canvas.height / 100,
-                    image.width * characterObject.scale / 100,
-                    image.height * characterObject.scale / 100);
+                    characterObject.ver * canvas.height / 100);
             }
             else {
                 ctx.drawImage(image,
