@@ -1,6 +1,6 @@
 const file = document.getElementById("fileIn"); // Add file button
 const characterTable = document.getElementById("characterTable");
-const ctx = document.getElementById("canvas").getContext("2d"); // Canvas context
+const canvas = document.getElementById("canvas"); // Canvas
 
 let characterImages = {};
 
@@ -31,11 +31,11 @@ file.onchange = () => {
                 cState.innerHTML = "state";
 
                 const iScale = document.getElementById(`${fr.fileName}_scale`);
-                iScale.addEventListener("input", (event) => {updateImageScale(event, fr.fileName)});
+                iScale.addEventListener("input", (event) => { updateImageScale(event, fr.fileName) });
                 const iHor = document.getElementById(`${fr.fileName}_hor`);
-                iHor.addEventListener("input", (event) => {updateImageHorizontal(event, fr.fileName)});
+                iHor.addEventListener("input", (event) => { updateImageHorizontal(event, fr.fileName) });
                 const iVer = document.getElementById(`${fr.fileName}_ver`);
-                iVer.addEventListener("input", (event) => {updateImageVertical(event, fr.fileName)});
+                iVer.addEventListener("input", (event) => { updateImageVertical(event, fr.fileName) });
 
                 characterImages[fr.fileName] = { image: fr.result, scale: 100, hor: 0, ver: 0 };
             }
@@ -69,13 +69,19 @@ function updateImageVertical(e, name) {
 }
 
 function processCanvas() {
-    ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+    const ctx = canvas.getContext('2d');
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
     for (let character in characterImages) {
         const characterObject = characterImages[character];
         const image = new Image();
         image.onload = () => {
-            ctx.drawImage(image, characterObject.hor, characterObject.ver);
+            image.crossOrigin = "Anonymous";
+            ctx.drawImage(image,
+                characterObject.hor,
+                characterObject.ver,
+                image.width * characterObject.scale / 100,
+                image.height * characterObject.scale / 100);
         }
-        image.src = characterObject.image;   
+        image.src = characterObject.image;
     }
 }
