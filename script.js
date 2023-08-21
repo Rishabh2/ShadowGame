@@ -12,14 +12,14 @@ file.onchange = function (e) {
             fr.onload = function () {
                 var row = characterTable.insertRow();
                 var cName = row.insertCell();
-                var cThumb = row.insertCell();
+                var cScale = row.insertCell();
                 var cHor = row.insertCell();
                 var cVer = row.insertCell();
                 var cState = row.insertCell();
 
                 // Populate each cell with the associate elements.
                 cName.innerHTML = fr.fileName;
-                cThumb.innerHTML = "thumb";
+                cScale.innerHTML = "scale";
                 cHor.innerHTML = "hor";
                 cVer.innerHTML = "ver";
                 cState.innerHTML = "state";
