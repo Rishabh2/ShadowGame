@@ -122,7 +122,7 @@ function processCanvas() {
                 tempContext.globalCompositeOperation = 'destination-in';
                 tempContext.drawImage(image, 0, 0);
                 imageData = tempContext.getImageData(0, 0, imageW, imageH);
-                ctx.putImageData(imageData, 0, 0, imageW, imageH);
+                ctx.putImageData(imageData, 0, 0);
             }
             else if (characterObject.state == "Background") {
                 // Use a temp canvas to convert the image appropriately
