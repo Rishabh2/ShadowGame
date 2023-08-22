@@ -1,0 +1,81 @@
+<html>
+
+<head>
+    <style>
+        body {
+            background: #a8a4a4;
+        }
+
+        canvas {
+            margin: 5;
+            image-rendering: optimizeSpeed;
+            image-rendering: -moz-crisp-edges;
+            image-rendering: -webkit-optimize-contrast;
+            image-rendering: -o-crisp-edges;
+            image-rendering: crisp-edges;
+            -ms-interpolation-mode: nearest-neighbor;
+            border: 1px solid black;
+        }
+
+        .container {
+            background: #ffffff;
+            position: fixed;
+            margin: auto;
+            float: left;
+        }
+
+        .editing {
+            margin: auto auto auto 810px;
+            float: right;
+            overflow-y: scroll;
+            position: fixed;
+        }
+
+        table,
+        th,
+        td {
+            border: 1px solid;
+            border-collapse: collapse;
+        }
+    </style>
+    <h1>Shadow Game: Version Alpha-Dev 0.1</h1>
+    <h6>Upload images with transparent backgrounds and move them around to make a shadow game. Contact @h2owsome on Discord if you have issues. Use <a href="https://remove.bg">remove.bg</a> to remove backgrounds from images.</h6>
+</head>
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+
+<body>
+    <div>
+        <div class="container">
+            <div>
+                <canvas id="canvas" width="800" height="600"></canvas>
+            </div>
+            <div>
+                <input type="button" value="Copy" id="Copy">
+            </div>
+        </div>
+        <div class="editing">
+            <div>
+                <input type="button" value="Shadow All" id="Shadow_All">
+                <input type="button" value="Reveal All" id="Reveal_All">
+                <input type="button" value="Background All" id="Background_All">
+            </div>
+            <div>
+                <table id="characterTable">
+                    <tr>
+                        <th>Character</th>
+                        <th>Scale</th>
+                        <th>Horizontal Position</th>
+                        <th>Vertical Position</th>
+                        <th>State</th>
+                    </tr>
+                </table>
+            </div>
+            <div>
+                <input type="file" name="media_file" id="fileIn" accept="image/*" multiple><br>
+            </div>
+        </div>
+    </div>
+    <script src="script-dev.js"></script>
+</body>
