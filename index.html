@@ -48,7 +48,7 @@
             border-collapse: collapse;
         }
     </style>
-    <h1>Shadow Game: Version Alpha 0.3</h1>
+    <h1>Shadow Game: Version Alpha 0.4</h1>
     <h6>Upload images with transparent backgrounds and move them around to make a shadow game. Contact @h2owsome on
         Discord if you have issues. Use <a href="https://remove.bg">remove.bg</a> to remove backgrounds from images.
     </h6>
@@ -69,9 +69,13 @@
         </div>
         <div class="editing">
             <div>
-                <input type="button" value="Shadow All" id="Shadow_All">
-                <input type="button" value="Reveal All" id="Reveal_All">
-                <input type="button" value="Background All" id="Background_All">
+                <input type="button" value="Shadow All" id="Shadow_All" />
+                <input type="button" value="Reveal All" id="Reveal_All" />
+                <input type="button" value="Background All" id="Background_All" />
+                <input type="color" value="#ffffff" id="BG_Color" />
+                <label for="BG_Color">Background</label>
+                <input type="color" value="#000000" id="SH_Color" />
+                <label for="SH_Color">Shadows</label>
             </div>
             <div>
                 <table id="characterTable">

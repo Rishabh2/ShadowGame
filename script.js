@@ -101,6 +101,21 @@ function truncate(num) {
     return num;
 }
 
+function hexToRgb(hex) {
+    // Expand shorthand form (e.g. "03F") to full form (e.g. "0033FF")
+    var shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
+    hex = hex.replace(shorthandRegex, function (m, r, g, b) {
+        return r + r + g + g + b + b;
+    });
+
+    var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+    return result ? {
+        r: parseInt(result[1], 16),
+        g: parseInt(result[2], 16),
+        b: parseInt(result[3], 16)
+    } : null;
+}
+
 function updateChars(value) {
     // Update the characters and radio values
     for (let character in characterImages) {
@@ -112,7 +127,7 @@ function updateChars(value) {
 
 function drawToCanvas(canvasToDrawTo, drawScale) {
     const ctx = canvasToDrawTo.getContext('2d');
-    ctx.fillStyle = "#ffffff";
+    ctx.fillStyle = document.getElementById("BG_Color").value;
     ctx.fillRect(0, 0, canvasToDrawTo.width, canvasToDrawTo.height);
     sortedChars = [];
     for (let character in characterImages) {
@@ -137,12 +152,13 @@ function drawToCanvas(canvasToDrawTo, drawScale) {
                 const tempContext = tempCanvas.getContext('2d');
                 tempContext.drawImage(image, 0, 0, imageW, imageH); // Pre-scale image data
                 let imgd = tempContext.getImageData(0, 0, imageW, imageH);
+                const color = hexToRgb(document.getElementById("SH_Color").value);
 
                 for (let i = 0; i < imgd.data.length; i += 4) {
-                    imgd.data[i + 0] = 0;
-                    imgd.data[i + 1] = 0;
-                    imgd.data[i + 2] = 0;
-                    imgd.data[i + 3] = 255 * Math.floor(imgd.data[i + 3] / 255);
+                    imgd.data[i + 0] = color.r;
+                    imgd.data[i + 1] = color.g;
+                    imgd.data[i + 2] = color.b;
+                    imgd.data[i + 3] = imgd.data[i + 3]; // For some reason I need this line.
                 }
                 tempContext.putImageData(imgd, 0, 0);
                 ctx.drawImage(tempCanvas, imageX, imageY);

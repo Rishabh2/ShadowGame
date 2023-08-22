@@ -158,7 +158,7 @@ function drawToCanvas(canvasToDrawTo, drawScale) {
                     imgd.data[i + 0] = color.r;
                     imgd.data[i + 1] = color.g;
                     imgd.data[i + 2] = color.b;
-                    imgd.data[i + 3] = imgd.data[i + 3]; //255 * Math.floor(imgd.data[i + 3] / 255);
+                    imgd.data[i + 3] = imgd.data[i + 3]; // For some reason I need this line.
                 }
                 tempContext.putImageData(imgd, 0, 0);
                 ctx.drawImage(tempCanvas, imageX, imageY);
