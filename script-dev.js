@@ -5,12 +5,7 @@ const canvas = document.getElementById("canvas"); // Canvas
 document.getElementById("Shadow_All").addEventListener("click", () => { updateChars("Shadowed") });
 document.getElementById("Reveal_All").addEventListener("click", () => { updateChars("Reveal") });
 document.getElementById("Background_All").addEventListener("click", () => { updateChars("Background") });
-document.getElementById("Copy").addEventListener("click", () => {
-    canvas.toBlob(function (blob) {
-        const item = new ClipboardItem({ "image/png": blob });
-        navigator.clipboard.write([item]);
-    });
-})
+document.getElementById("Download").addEventListener("click", createHDImage);
 
 let characterImages = {};
 
@@ -115,10 +110,10 @@ function updateChars(value) {
     processCanvas();
 }
 
-function processCanvas() {
-    const ctx = canvas.getContext('2d');
+function drawToCanvas(canvasToDrawTo, drawScale) {
+    const ctx = canvasToDrawTo.getContext('2d');
     ctx.fillStyle = "#ffffff";
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.fillRect(0, 0, canvasToDrawTo.width, canvasToDrawTo.height);
     sortedChars = [];
     for (let character in characterImages) {
         sortedChars.push(characterImages[character]);
@@ -129,10 +124,10 @@ function processCanvas() {
 
         image.onload = () => {
             image.crossOrigin = "Anonymous";
-            const imageX = characterObject.hor * canvas.width / 100;
-            const imageY = characterObject.ver * canvas.height / 100;
-            const imageW = image.width * characterObject.scale / 100;
-            const imageH = image.height * characterObject.scale / 100;
+            const imageX = characterObject.hor * canvasToDrawTo.width / 100;
+            const imageY = characterObject.ver * canvasToDrawTo.height / 100;
+            const imageW = image.width * characterObject.scale * drawScale / 100;
+            const imageH = image.height * characterObject.scale * drawScale / 100;
 
             if (characterObject.state == "Shadowed") {
                 // Use a temp canvas to convert the image appropriately
@@ -178,4 +173,25 @@ function processCanvas() {
         };
         image.src = characterObject.image;
     }
+}
+
+function processCanvas() {
+    drawToCanvas(canvas, 1);
+}
+
+function createHDImage() {
+    const scale = 4;
+    const hdCanvas = document.createElement("canvas");
+    hdCanvas.width = canvas.width * scale;
+    hdCanvas.height = canvas.height * scale;
+    drawToCanvas(hdCanvas, scale);
+    var dataURL = canvas.toDataURL("image/png");
+    // Create a dummy link text
+    var a = document.createElement('a');
+    // Set the link to the image so that when clicked, the image begins downloading
+    a.href = dataURL
+    // Specify the image filename
+    a.download = 'canvas-download.png';
+    // Click on the link to set off download
+    a.click();
 }
