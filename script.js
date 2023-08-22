@@ -2,7 +2,7 @@ const file = document.getElementById("fileIn"); // Add file button
 const characterTable = document.getElementById("characterTable");
 const canvas = document.getElementById("canvas"); // Canvas
 
-document.getElementById("Shadow_All").addEventListener("click", () => { updateChars("Shadow") });
+document.getElementById("Shadow_All").addEventListener("click", () => { updateChars("Shadowed") });
 document.getElementById("Reveal_All").addEventListener("click", () => { updateChars("Reveal") });
 document.getElementById("Background_All").addEventListener("click", () => { updateChars("Background") });
 document.getElementById("Copy").addEventListener("click", () => {
