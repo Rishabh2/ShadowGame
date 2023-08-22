@@ -34,12 +34,14 @@ file.onchange = () => {
                 // Populate each cell with the associate elements.
 
                 console.log("Create Cells", fr.fileName);
-                cName.innerHTML = fr.fileName;
+                cName.innerHTML = `<button class="link" id="${fr.fileName}_del">X</button> fr.fileName`;
                 cScale.innerHTML = `<input type="range" min="0" max="200" value="100" class="slider" id="${fr.fileName}_scale">`;
                 cHor.innerHTML = `<input type="range" min="0" max="100" value="50" class="slider" id="${fr.fileName}_hor">`;
                 cVer.innerHTML = `<input type="range" min="0" max="100" value="50" class="slider" id="${fr.fileName}_ver">`;
                 cState.innerHTML = `<input type="radio" name="${fr.fileName}_state" value="Reveal" id="${fr.fileName}_rev" checked="checked"><label for="${fr.fileName}_rev">Reveal</label><br><input type="radio" name="${fr.fileName}_state" value="Shadowed" id="${fr.fileName}_sha"><label for="${fr.fileName}_sha">Shadow</label><br><input type="radio" name="${fr.fileName}_state" value="Background" id="${fr.fileName}_bac"><label for="${fr.fileName}_bac">Background</label>`;
 
+                const iDelete = document.getElementById(`${fr.fileName}_del`);
+                iDelete.addEventListener("click", (event) => { deleteCharacterRow(event, fr.fileName) });
                 const iScale = document.getElementById(`${fr.fileName}_scale`);
                 iScale.addEventListener("input", (event) => { updateImageScale(event, fr.fileName) });
                 const iHor = document.getElementById(`${fr.fileName}_hor`);
@@ -85,6 +87,14 @@ function updateImageState(e, name) {
     characterImages[name].state = e.target.value;
     console.log("Updated State", e.target.value, e.target, e);
     processCanvas();
+}
+
+function deleteCharacterRow(e, name) {
+    console.log("Delete row", "name", e.target.parentNode.parentNode, e.target.parentNode, e.target);
+    const index = e.target.parentNode.parentNode.rowIndex;
+    characterTable.deleteRow(index);
+    delete characterImages[name];
+
 }
 
 function truncate(num) {
