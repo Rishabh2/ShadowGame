@@ -15,8 +15,8 @@
             image-rendering: crisp-edges;
             -ms-interpolation-mode: nearest-neighbor;
             border: 1px solid black;
-            width: 800px;
-            height: 600px;
+            width: 400px;
+            height: 400px;
         }
 
         .container {
@@ -61,7 +61,11 @@
     <div>
         <div class="container">
             <div>
-                <canvas id="canvas" width="800" height="600"></canvas>
+                <label for="Theme">Theme: </label>
+                <input type="text" name="Theme" id="Theme" />
+            </div>
+            <div>
+                <canvas id="canvas" width="800" height="800"></canvas>
             </div>
             <div>
                 <input type="button" value="Download" id="Download">

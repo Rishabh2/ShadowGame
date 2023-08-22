@@ -30,7 +30,7 @@ file.onchange = () => {
 
                 console.log("Create Cells", fr.fileName);
                 cName.innerHTML = `<button class="link" id="${fr.fileName}_del">X</button> ${fr.fileName.replace(/\.[^/.]+$/, "")}`;
-                cScale.innerHTML = `<input type="range" min="0" max="200" value="100" class="slider" id="${fr.fileName}_scale">`;
+                cScale.innerHTML = `<input type="range" min="0" max="150" value="75" class="slider" id="${fr.fileName}_scale">`;
                 cHor.innerHTML = `<input type="range" min="0" max="100" value="50" class="slider" id="${fr.fileName}_hor">`;
                 cVer.innerHTML = `<input type="range" min="0" max="100" value="50" class="slider" id="${fr.fileName}_ver">`;
                 cState.innerHTML = `<input type="radio" name="${fr.fileName}_state" value="Reveal" id="${fr.fileName}_rev" checked="checked"><label for="${fr.fileName}_rev">Reveal</label><br><input type="radio" name="${fr.fileName}_state" value="Shadowed" id="${fr.fileName}_sha"><label for="${fr.fileName}_sha">Shadow</label><br><input type="radio" name="${fr.fileName}_state" value="Background" id="${fr.fileName}_bac"><label for="${fr.fileName}_bac">Background</label>`;
@@ -48,7 +48,7 @@ file.onchange = () => {
                     iState.addEventListener("click", (event) => { updateImageState(event, fr.fileName) });
                 }
 
-                characterImages[fr.fileName] = { image: fr.result, scale: 100, hor: 50, ver: 50, state: "Reveal" };
+                characterImages[fr.fileName] = { image: fr.result, scale: 75, hor: 50, ver: 50, state: "Reveal" };
             }
             fr.readAsDataURL(fileToLoad);
         }
@@ -129,6 +129,15 @@ function drawToCanvas(canvasToDrawTo, drawScale) {
     const ctx = canvasToDrawTo.getContext('2d');
     ctx.fillStyle = document.getElementById("BG_Color").value;
     ctx.fillRect(0, 0, canvasToDrawTo.width, canvasToDrawTo.height);
+
+    
+    const themeText = document.getElementById("Theme").value;
+    let vertFactor = 1;
+    if (themeText) {
+        vertFactor = 0.75; // Scale down vertical motion if theme text enabled
+    }
+
+    // Draw the characters
     sortedChars = [];
     for (let character in characterImages) {
         sortedChars.push(characterImages[character]);
@@ -140,7 +149,7 @@ function drawToCanvas(canvasToDrawTo, drawScale) {
         image.onload = () => {
             image.crossOrigin = "Anonymous";
             const imageX = characterObject.hor * canvasToDrawTo.width / 100;
-            const imageY = characterObject.ver * canvasToDrawTo.height / 100;
+            const imageY = vertFactor * characterObject.ver * canvasToDrawTo.height / 100; // only 3/4 of the height is for characters, the bottom is for the text
             const imageW = image.width * characterObject.scale * drawScale / 100;
             const imageH = image.height * characterObject.scale * drawScale / 100;
 
@@ -188,6 +197,15 @@ function drawToCanvas(canvasToDrawTo, drawScale) {
             }
         };
         image.src = characterObject.image;
+    }
+
+    // Draw the bottom text
+    if (themeText) {
+        ctx.fillStyle = document.getElementById("SH_Color").value;
+        ctx.fillRect(0, canvasToDrawTo.height * 0.75, canvasToDrawTo.width, canvasToDrawTo.height * 0.25);
+        ctx.fillStyle = document.getElementById("BG_Color").value;
+        ctx.textAlign = 'center';
+        ctx.fillText(themeText, canvasToDrawTo.width / 2, canvasToDrawTo.height * 0.8);
     }
 }
 
