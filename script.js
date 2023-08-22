@@ -108,7 +108,7 @@ function updateChars(value) {
 
 function processCanvas() {
     const ctx = canvas.getContext('2d');
-    ctx.fillstyle = 'white';
+    ctx.fillstyle = "#ffffff";
     ctx.fillRect(0, 0, canvas.width, canvas.height);
     sortedChars = [];
     for (let character in characterImages) {
