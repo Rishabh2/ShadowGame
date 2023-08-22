@@ -90,11 +90,10 @@ function updateImageState(e, name) {
 }
 
 function deleteCharacterRow(e, name) {
-    console.log("Delete row", "name", e.target.parentNode.parentNode, e.target.parentNode, e.target);
     const index = e.target.parentNode.parentNode.rowIndex;
     characterTable.deleteRow(index);
     delete characterImages[name];
-
+    processCanvas();
 }
 
 function truncate(num) {
