@@ -34,7 +34,7 @@ file.onchange = () => {
                 // Populate each cell with the associate elements.
 
                 console.log("Create Cells", fr.fileName);
-                cName.innerHTML = `<button class="link" id="${fr.fileName}_del">X</button> fr.fileName`;
+                cName.innerHTML = `<button class="link" id="${fr.fileName}_del">X</button> ${fr.fileNamex.replace(/\.[^/.]+$/, "")}`;
                 cScale.innerHTML = `<input type="range" min="0" max="200" value="100" class="slider" id="${fr.fileName}_scale">`;
                 cHor.innerHTML = `<input type="range" min="0" max="100" value="50" class="slider" id="${fr.fileName}_hor">`;
                 cVer.innerHTML = `<input type="range" min="0" max="100" value="50" class="slider" id="${fr.fileName}_ver">`;
