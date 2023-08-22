@@ -151,8 +151,9 @@ function processCanvas() {
                 const tempContext = tempCanvas.getContext('2d');
                 tempContext.drawImage(image, 0, 0, imageW, imageH); // Pre-scale image data
                 let imgd = tempContext.getImageData(0, 0, imageW, imageH);
-                const C = -100;
+                const C = -50;
                 const F = 259 * (255 + C) / (255 * (259 - C));
+                console.log("F", F);
                 for (let i = 0; i < imgd.data.length; i += 4) {
                     imgd.data[i + 0] = truncate(F * imgd.data[i + 0] - 128) + 128;
                     imgd.data[i + 1] = truncate(F * imgd.data[i + 1] - 128) + 128;
@@ -165,7 +166,7 @@ function processCanvas() {
             else {
                 ctx.drawImage(image, imageX, imageY, imageW, imageH);
             }
-        }
+        };
         image.src = characterObject.image;
     }
 }
