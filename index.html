@@ -15,6 +15,8 @@
             image-rendering: crisp-edges;
             -ms-interpolation-mode: nearest-neighbor;
             border: 1px solid black;
+            width: 800px;
+            height: 600px;
         }
 
         .container {
@@ -32,6 +34,13 @@
             height: 80vh;
         }
 
+        button.link {
+            background: none;
+            border: 1px solid red;
+            border-radius: 2px;
+            color: red;
+        }
+
         table,
         th,
         td {
@@ -39,8 +48,10 @@
             border-collapse: collapse;
         }
     </style>
-    <h1>Shadow Game: Version Alpha 0.1</h1>
-    <h6>Upload images with transparent backgrounds and move them around to make a shadow game. Contact @h2owsome on Discord if you have issues. Use <a href="https://remove.bg">remove.bg</a> to remove backgrounds from images.</h6>
+    <h1>Shadow Game: Version Alpha-Dev 0.3</h1>
+    <h6>Upload images with transparent backgrounds and move them around to make a shadow game. Contact @h2owsome on
+        Discord if you have issues. Use <a href="https://remove.bg">remove.bg</a> to remove backgrounds from images.
+    </h6>
 </head>
 <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -53,7 +64,7 @@
                 <canvas id="canvas" width="800" height="600"></canvas>
             </div>
             <div>
-                <input type="button" value="Copy" id="Copy">
+                <input type="button" value="Download" id="Download">
             </div>
         </div>
         <div class="editing">
@@ -78,5 +89,5 @@
             </div>
         </div>
     </div>
-    <script src="script.js"></script>
+    <script src="script-dev.js"></script>
 </body>

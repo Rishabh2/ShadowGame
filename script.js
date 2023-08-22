@@ -5,12 +5,7 @@ const canvas = document.getElementById("canvas"); // Canvas
 document.getElementById("Shadow_All").addEventListener("click", () => { updateChars("Shadowed") });
 document.getElementById("Reveal_All").addEventListener("click", () => { updateChars("Reveal") });
 document.getElementById("Background_All").addEventListener("click", () => { updateChars("Background") });
-document.getElementById("Copy").addEventListener("click", () => {
-    canvas.toBlob(function (blob) {
-        const item = new ClipboardItem({ "image/png": blob });
-        navigator.clipboard.write([item]);
-    });
-})
+document.getElementById("Download").addEventListener("click", createHDImage);
 
 let characterImages = {};
 
@@ -34,12 +29,14 @@ file.onchange = () => {
                 // Populate each cell with the associate elements.
 
                 console.log("Create Cells", fr.fileName);
-                cName.innerHTML = fr.fileName;
+                cName.innerHTML = `<button class="link" id="${fr.fileName}_del">X</button> ${fr.fileName.replace(/\.[^/.]+$/, "")}`;
                 cScale.innerHTML = `<input type="range" min="0" max="200" value="100" class="slider" id="${fr.fileName}_scale">`;
                 cHor.innerHTML = `<input type="range" min="0" max="100" value="50" class="slider" id="${fr.fileName}_hor">`;
                 cVer.innerHTML = `<input type="range" min="0" max="100" value="50" class="slider" id="${fr.fileName}_ver">`;
                 cState.innerHTML = `<input type="radio" name="${fr.fileName}_state" value="Reveal" id="${fr.fileName}_rev" checked="checked"><label for="${fr.fileName}_rev">Reveal</label><br><input type="radio" name="${fr.fileName}_state" value="Shadowed" id="${fr.fileName}_sha"><label for="${fr.fileName}_sha">Shadow</label><br><input type="radio" name="${fr.fileName}_state" value="Background" id="${fr.fileName}_bac"><label for="${fr.fileName}_bac">Background</label>`;
 
+                const iDelete = document.getElementById(`${fr.fileName}_del`);
+                iDelete.addEventListener("click", (event) => { deleteCharacterRow(event, fr.fileName) });
                 const iScale = document.getElementById(`${fr.fileName}_scale`);
                 iScale.addEventListener("input", (event) => { updateImageScale(event, fr.fileName) });
                 const iHor = document.getElementById(`${fr.fileName}_hor`);
@@ -87,6 +84,13 @@ function updateImageState(e, name) {
     processCanvas();
 }
 
+function deleteCharacterRow(e, name) {
+    const index = e.target.parentNode.parentNode.rowIndex;
+    characterTable.deleteRow(index);
+    delete characterImages[name];
+    processCanvas();
+}
+
 function truncate(num) {
     if (num < 0) {
         return 0;
@@ -106,10 +110,10 @@ function updateChars(value) {
     processCanvas();
 }
 
-function processCanvas() {
-    const ctx = canvas.getContext('2d');
+function drawToCanvas(canvasToDrawTo, drawScale) {
+    const ctx = canvasToDrawTo.getContext('2d');
     ctx.fillStyle = "#ffffff";
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.fillRect(0, 0, canvasToDrawTo.width, canvasToDrawTo.height);
     sortedChars = [];
     for (let character in characterImages) {
         sortedChars.push(characterImages[character]);
@@ -120,10 +124,10 @@ function processCanvas() {
 
         image.onload = () => {
             image.crossOrigin = "Anonymous";
-            const imageX = characterObject.hor * canvas.width / 100;
-            const imageY = characterObject.ver * canvas.height / 100;
-            const imageW = image.width * characterObject.scale / 100;
-            const imageH = image.height * characterObject.scale / 100;
+            const imageX = characterObject.hor * canvasToDrawTo.width / 100;
+            const imageY = characterObject.ver * canvasToDrawTo.height / 100;
+            const imageW = image.width * characterObject.scale * drawScale / 100;
+            const imageH = image.height * characterObject.scale * drawScale / 100;
 
             if (characterObject.state == "Shadowed") {
                 // Use a temp canvas to convert the image appropriately
@@ -169,4 +173,25 @@ function processCanvas() {
         };
         image.src = characterObject.image;
     }
+}
+
+function processCanvas() {
+    drawToCanvas(canvas, 1);
+}
+
+function createHDImage() {
+    const scale = 8;
+    const hdCanvas = document.createElement("canvas");
+    hdCanvas.width = canvas.width * scale;
+    hdCanvas.height = canvas.height * scale;
+    drawToCanvas(hdCanvas, scale);
+    var dataURL = canvas.toDataURL("image/png");
+    // Create a dummy link text
+    var a = document.createElement('a');
+    // Set the link to the image so that when clicked, the image begins downloading
+    a.href = dataURL
+    // Specify the image filename
+    a.download = 'canvas-download.png';
+    // Click on the link to set off download
+    a.click();
 }

@@ -180,7 +180,7 @@ function processCanvas() {
 }
 
 function createHDImage() {
-    const scale = 4;
+    const scale = 8;
     const hdCanvas = document.createElement("canvas");
     hdCanvas.width = canvas.width * scale;
     hdCanvas.height = canvas.height * scale;
