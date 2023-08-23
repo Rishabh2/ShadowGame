@@ -130,11 +130,11 @@ function drawToCanvas(canvasToDrawTo, drawScale) {
     ctx.fillStyle = document.getElementById("BG_Color").value;
     ctx.fillRect(0, 0, canvasToDrawTo.width, canvasToDrawTo.height);
 
-    
+
     const themeText = document.getElementById("Theme").value;
     let vertFactor = 1;
     if (themeText) {
-        vertFactor = 0.75; // Scale down vertical motion if theme text enabled
+        vertFactor = 0.85; // Scale down vertical motion if theme text enabled
     }
 
     // Draw the characters
@@ -201,11 +201,12 @@ function drawToCanvas(canvasToDrawTo, drawScale) {
 
     // Draw the bottom text
     if (themeText) {
+        const tLine1 = 1 - (2 * (1 - vertFactor) / 3);
         ctx.fillStyle = document.getElementById("SH_Color").value;
-        ctx.fillRect(0, canvasToDrawTo.height * 0.75, canvasToDrawTo.width, canvasToDrawTo.height * 0.25);
+        ctx.fillRect(0, canvasToDrawTo.height * vertFactor, canvasToDrawTo.width, canvasToDrawTo.height * (1 - vertFactor));
         ctx.fillStyle = document.getElementById("BG_Color").value;
         ctx.textAlign = 'center';
-        ctx.fillText(themeText, canvasToDrawTo.width / 2, canvasToDrawTo.height * 0.8);
+        ctx.fillText(themeText, canvasToDrawTo.width / 2, canvasToDrawTo.height * tLine1);
     }
 }
 
