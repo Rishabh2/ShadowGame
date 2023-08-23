@@ -61,7 +61,7 @@ file.onchange = () => {
                 const iCategory = document.getElementById(`${fr.fileName}_cat`);
                 iCategory.addEventListener("change", (event) => { updateCharacterCategory(event, fr.fileName) });
 
-                characterImages[fr.fileName] = { image: fr.result, scale: 75, hor: 50, ver: 50, state: "Reveal", category: "" };
+                characterImages[fr.fileName] = { image: fr.result, scale: 75, hor: 50, ver: 50, state: "Reveal", category: "Anime" };
             }
             fr.readAsDataURL(fileToLoad);
         }
