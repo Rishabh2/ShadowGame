@@ -144,6 +144,7 @@ function updateChars(value) {
 }
 
 function drawToCanvas(canvasToDrawTo, drawScale) {
+    console.log("Start Draw");
     const ctx = canvasToDrawTo.getContext('2d');
     ctx.fillStyle = document.getElementById("BG_Color").value;
     ctx.fillRect(0, 0, canvasToDrawTo.width, canvasToDrawTo.height);
