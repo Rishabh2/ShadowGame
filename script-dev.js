@@ -1,7 +1,7 @@
 const file = document.getElementById("fileIn"); // Add file button
 const characterTable = document.getElementById("characterTable");
 const canvas = document.getElementById("canvas"); // Canvas
-const categories = ['Anime', 'Animated Film', 'Animated TV', 'Book', 'Comics', 'Live Action Film', 'Live Action TV', 'Video Game', 'Other'];
+const categories = ['Anime', 'Animated Film', 'Animated TV', 'Book', 'Comics', 'Film', 'Live Action Film', 'Live Action TV', 'TV', 'Video Game', 'Other'];
 
 document.getElementById("Shadow_All").addEventListener("click", () => { updateChars("Shadowed") });
 document.getElementById("Reveal_All").addEventListener("click", () => { updateChars("Reveal") });
