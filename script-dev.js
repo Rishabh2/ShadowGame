@@ -38,11 +38,12 @@ file.onchange = () => {
                 cHor.innerHTML = `<input type="range" min="0" max="100" value="50" class="slider" id="${fr.fileName}_hor" />`;
                 cVer.innerHTML = `<input type="range" min="0" max="100" value="50" class="slider" id="${fr.fileName}_ver" />`;
                 cState.innerHTML = `<input type="radio" name="${fr.fileName}_state" value="Reveal" id="${fr.fileName}_rev" checked="checked" /><label for="${fr.fileName}_rev">Reveal</label><br><input type="radio" name="${fr.fileName}_state" value="Shadowed" id="${fr.fileName}_sha" /><label for="${fr.fileName}_sha">Shadow</label><br><input type="radio" name="${fr.fileName}_state" value="Background" id="${fr.fileName}_bac" /><label for="${fr.fileName}_bac">Background</label>`;
-                cCategory.innerHTML = `<select name="${fr.fileName}_cat" id="${fr.fileName}_cat">`;
+                let catString = `<select name="${fr.fileName}_cat" id="${fr.fileName}_cat">`;
                 for (let category of categories) {
-                    cCategory.innerHTML += `<option value="${category}">${category}</option>`;
+                    catString += `<option value="${category}">${category}</option>`;
                 }
-                cCategory.innerHTML += `</select>`;
+                catString += `</select>`;
+                cCategory.innerHTML = catString;
 
                 const iDelete = document.getElementById(`${fr.fileName}_del`);
                 iDelete.addEventListener("click", (event) => { deleteCharacterRow(event, fr.fileName) });
