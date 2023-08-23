@@ -6,6 +6,7 @@ const categories = ['Anime', 'Animated Film', 'Animated TV', 'Book', 'Comics', '
 document.getElementById("Shadow_All").addEventListener("click", () => { updateChars("Shadowed") });
 document.getElementById("Reveal_All").addEventListener("click", () => { updateChars("Reveal") });
 document.getElementById("Background_All").addEventListener("click", () => { updateChars("Background") });
+document.getElementById("Copy").addEventListener("click", copyHDImage);
 document.getElementById("Download").addEventListener("click", createHDImage);
 document.getElementById("Refresh").addEventListener("click", processCanvas);
 document.getElementById("Theme").addEventListener("input", processCanvas);
@@ -21,7 +22,6 @@ file.onchange = () => {
         for (let fileToLoad of files) {
             const fr = new FileReader();
             fr.fileName = fileToLoad.name;
-            console.log("Read name", fileToLoad.name, fr.fileName);
             fr.onload = () => {
                 const row = characterTable.insertRow();
                 const cName = row.insertCell();
@@ -33,7 +33,6 @@ file.onchange = () => {
 
                 // Populate each cell with the associate elements.
 
-                console.log("Create Cells", fr.fileName);
                 cName.innerHTML = `<button class="link" id="${fr.fileName}_del">X</button> ${fr.fileName.replace(/\.[^/.]+$/, "")}`;
                 cScale.innerHTML = `<input type="range" min="0" max="150" value="75" class="slider" id="${fr.fileName}_scale" />`;
                 cHor.innerHTML = `<input type="range" min="0" max="100" value="50" class="slider" id="${fr.fileName}_hor" />`;
@@ -93,7 +92,6 @@ function updateImageVertical(e, name) {
 }
 function updateImageState(e, name) {
     characterImages[name].state = e.target.value;
-    console.log("Updated State", e.target.value, e.target, e);
     processCanvas();
 }
 
@@ -148,6 +146,7 @@ function drawToCanvas(canvasToDrawTo, drawScale) {
     ctx.fillStyle = document.getElementById("BG_Color").value;
     ctx.fillRect(0, 0, canvasToDrawTo.width, canvasToDrawTo.height);
 
+
     const themeText = document.getElementById("Theme").value;
     let vertFactor = 1;
     if (themeText) {
@@ -166,7 +165,7 @@ function drawToCanvas(canvasToDrawTo, drawScale) {
         image.onload = () => {
             image.crossOrigin = "Anonymous";
             const imageX = characterObject.hor * canvasToDrawTo.width / 100;
-            const imageY = vertFactor * characterObject.ver * canvasToDrawTo.height / 100; // only most of the height is for characters, the bottom is for the text
+            const imageY = vertFactor * characterObject.ver * canvasToDrawTo.height / 100; // only 3/4 of the height is for characters, the bottom is for the text
             const imageW = image.width * characterObject.scale * drawScale / 100;
             const imageH = image.height * characterObject.scale * drawScale / 100;
 
@@ -199,7 +198,6 @@ function drawToCanvas(canvasToDrawTo, drawScale) {
                 let imgd = tempContext.getImageData(0, 0, imageW, imageH);
                 const C = -50;
                 const F = 259 * (255 + C) / (255 * (259 - C));
-                console.log("F", F);
                 for (let i = 0; i < imgd.data.length; i += 4) {
                     imgd.data[i + 0] = truncate(F * imgd.data[i + 0] - 128) + 128;
                     imgd.data[i + 1] = truncate(F * imgd.data[i + 1] - 128) + 128;
@@ -244,7 +242,6 @@ function drawToCanvas(canvasToDrawTo, drawScale) {
             if (count) {
                 categoryText += `${category}: ${active}/${count}`;
                 tabCount++;
-                console.log("Tabcount", tabCount);
                 if (tabCount % 5 == 0) {
                     categoryText += '\n';
                 } else {
@@ -256,7 +253,6 @@ function drawToCanvas(canvasToDrawTo, drawScale) {
         const lines = categoryText.split('\n');
         ctx.font = '20px Comic Sans';
         for (let i = 0; i < lines.length; i++) {
-            console.log("line", lines[i]);
             ctx.fillText(lines[i].trim(), canvasToDrawTo.width / 2, canvasToDrawTo.height * tLine2 + (i * lineheight));
         }
     }
@@ -281,6 +277,14 @@ function createHDImage() {
     a.download = 'canvas-download.png';
     // Click on the link to set off download
     a.click();
+}
+
+function copyHDImage() {
+    processCanvas();
+    canvas.toBlob(function (blob) {
+        const item = new ClipboardItem({ "image/png": blob });
+        navigator.clipboard.write([item]);
+    });
 }
 
 function sortTable() {

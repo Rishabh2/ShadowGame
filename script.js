@@ -22,7 +22,6 @@ file.onchange = () => {
         for (let fileToLoad of files) {
             const fr = new FileReader();
             fr.fileName = fileToLoad.name;
-            console.log("Read name", fileToLoad.name, fr.fileName);
             fr.onload = () => {
                 const row = characterTable.insertRow();
                 const cName = row.insertCell();
@@ -34,7 +33,6 @@ file.onchange = () => {
 
                 // Populate each cell with the associate elements.
 
-                console.log("Create Cells", fr.fileName);
                 cName.innerHTML = `<button class="link" id="${fr.fileName}_del">X</button> ${fr.fileName.replace(/\.[^/.]+$/, "")}`;
                 cScale.innerHTML = `<input type="range" min="0" max="150" value="75" class="slider" id="${fr.fileName}_scale" />`;
                 cHor.innerHTML = `<input type="range" min="0" max="100" value="50" class="slider" id="${fr.fileName}_hor" />`;
@@ -94,7 +92,6 @@ function updateImageVertical(e, name) {
 }
 function updateImageState(e, name) {
     characterImages[name].state = e.target.value;
-    console.log("Updated State", e.target.value, e.target, e);
     processCanvas();
 }
 
@@ -145,7 +142,6 @@ function updateChars(value) {
 }
 
 function drawToCanvas(canvasToDrawTo, drawScale) {
-    console.log("Start Draw");
     const ctx = canvasToDrawTo.getContext('2d');
     ctx.fillStyle = document.getElementById("BG_Color").value;
     ctx.fillRect(0, 0, canvasToDrawTo.width, canvasToDrawTo.height);
@@ -162,9 +158,7 @@ function drawToCanvas(canvasToDrawTo, drawScale) {
     for (let character in characterImages) {
         sortedChars.push(characterImages[character]);
     }
-    console.log("Presort", sortedChars);
     sortedChars.sort((a, b) => { return b.state.length - a.state.length });
-    console.log("Postsort", sortedChars);
     for (let characterObject of sortedChars) {
         const image = new Image();
 
@@ -204,7 +198,6 @@ function drawToCanvas(canvasToDrawTo, drawScale) {
                 let imgd = tempContext.getImageData(0, 0, imageW, imageH);
                 const C = -50;
                 const F = 259 * (255 + C) / (255 * (259 - C));
-                console.log("F", F);
                 for (let i = 0; i < imgd.data.length; i += 4) {
                     imgd.data[i + 0] = truncate(F * imgd.data[i + 0] - 128) + 128;
                     imgd.data[i + 1] = truncate(F * imgd.data[i + 1] - 128) + 128;
@@ -249,7 +242,6 @@ function drawToCanvas(canvasToDrawTo, drawScale) {
             if (count) {
                 categoryText += `${category}: ${active}/${count}`;
                 tabCount++;
-                console.log("Tabcount", tabCount);
                 if (tabCount % 5 == 0) {
                     categoryText += '\n';
                 } else {
@@ -261,7 +253,6 @@ function drawToCanvas(canvasToDrawTo, drawScale) {
         const lines = categoryText.split('\n');
         ctx.font = '20px Comic Sans';
         for (let i = 0; i < lines.length; i++) {
-            console.log("line", lines[i]);
             ctx.fillText(lines[i].trim(), canvasToDrawTo.width / 2, canvasToDrawTo.height * tLine2 + (i * lineheight));
         }
     }
