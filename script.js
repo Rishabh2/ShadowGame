@@ -6,7 +6,6 @@ const categories = ['Anime', 'Animated Film', 'Animated TV', 'Book', 'Comics', '
 document.getElementById("Shadow_All").addEventListener("click", () => { updateChars("Shadowed") });
 document.getElementById("Reveal_All").addEventListener("click", () => { updateChars("Reveal") });
 document.getElementById("Background_All").addEventListener("click", () => { updateChars("Background") });
-document.getElementById("Copy").addEventListener("click", copyHDImage);
 document.getElementById("Download").addEventListener("click", createHDImage);
 document.getElementById("Refresh").addEventListener("click", processCanvas);
 document.getElementById("Theme").addEventListener("input", processCanvas);
