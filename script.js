@@ -289,12 +289,8 @@ function createHDImage() {
 }
 
 function copyHDImage() {
-    const scale = 1;
-    const hdCanvas = document.createElement("canvas");
-    hdCanvas.width = canvas.width * scale;
-    hdCanvas.height = canvas.height * scale;
-    drawToCanvas(hdCanvas, scale);
-    hdCanvas.toBlob(function (blob) {
+    processCanvas();
+    canvas.toBlob(function (blob) {
         const item = new ClipboardItem({ "image/png": blob });
         navigator.clipboard.write([item]);
     });
