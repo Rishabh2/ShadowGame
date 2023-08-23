@@ -231,7 +231,7 @@ function drawToCanvas(canvasToDrawTo, drawScale) {
         let categoryText = "";
         for (let category of categories) {
             let count = 0;
-            for (let character of characterImages){
+            for (let character in characterImages){
                 if (characterImages[character].category == category){
                     count++;
                 }
