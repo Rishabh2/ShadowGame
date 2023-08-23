@@ -171,7 +171,7 @@ function drawToCanvas(actualCanvasToDrawTo, drawScale) {
         image.onload = () => {
             image.crossOrigin = "Anonymous";
             const imageX = characterObject.hor * canvasToDrawTo.width / 100;
-            const imageY = vertFactor * characterObject.ver * canvasToDrawTo.height / 100; // only 3/4 of the height is for characters, the bottom is for the text
+            const imageY = vertFactor * characterObject.ver * canvasToDrawTo.height / 100; // only most of the height is for characters, the bottom is for the text
             const imageW = image.width * characterObject.scale * drawScale / 100;
             const imageH = image.height * characterObject.scale * drawScale / 100;
 
