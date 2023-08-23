@@ -1,11 +1,14 @@
 const file = document.getElementById("fileIn"); // Add file button
 const characterTable = document.getElementById("characterTable");
 const canvas = document.getElementById("canvas"); // Canvas
+const categories = ['Anime', 'Animated Film', 'Animated TV', 'Book', 'Comics', 'Live Action Film', 'Live Action TV', 'Video Game', 'Other'];
 
 document.getElementById("Shadow_All").addEventListener("click", () => { updateChars("Shadowed") });
 document.getElementById("Reveal_All").addEventListener("click", () => { updateChars("Reveal") });
 document.getElementById("Background_All").addEventListener("click", () => { updateChars("Background") });
 document.getElementById("Download").addEventListener("click", createHDImage);
+document.getElementById("Refresh").addEventListener("click", processCanvas);
+document.getElementById("Theme").addEventListener("input", processCanvas);
 
 let characterImages = {};
 
@@ -25,15 +28,21 @@ file.onchange = () => {
                 const cHor = row.insertCell();
                 const cVer = row.insertCell();
                 const cState = row.insertCell();
+                const cCategory = row.insertCell();
 
                 // Populate each cell with the associate elements.
 
                 console.log("Create Cells", fr.fileName);
                 cName.innerHTML = `<button class="link" id="${fr.fileName}_del">X</button> ${fr.fileName.replace(/\.[^/.]+$/, "")}`;
-                cScale.innerHTML = `<input type="range" min="0" max="150" value="75" class="slider" id="${fr.fileName}_scale">`;
-                cHor.innerHTML = `<input type="range" min="0" max="100" value="50" class="slider" id="${fr.fileName}_hor">`;
-                cVer.innerHTML = `<input type="range" min="0" max="100" value="50" class="slider" id="${fr.fileName}_ver">`;
-                cState.innerHTML = `<input type="radio" name="${fr.fileName}_state" value="Reveal" id="${fr.fileName}_rev" checked="checked"><label for="${fr.fileName}_rev">Reveal</label><br><input type="radio" name="${fr.fileName}_state" value="Shadowed" id="${fr.fileName}_sha"><label for="${fr.fileName}_sha">Shadow</label><br><input type="radio" name="${fr.fileName}_state" value="Background" id="${fr.fileName}_bac"><label for="${fr.fileName}_bac">Background</label>`;
+                cScale.innerHTML = `<input type="range" min="0" max="150" value="75" class="slider" id="${fr.fileName}_scale" />`;
+                cHor.innerHTML = `<input type="range" min="0" max="100" value="50" class="slider" id="${fr.fileName}_hor" />`;
+                cVer.innerHTML = `<input type="range" min="0" max="100" value="50" class="slider" id="${fr.fileName}_ver" />`;
+                cState.innerHTML = `<input type="radio" name="${fr.fileName}_state" value="Reveal" id="${fr.fileName}_rev" checked="checked" /><label for="${fr.fileName}_rev">Reveal</label><br><input type="radio" name="${fr.fileName}_state" value="Shadowed" id="${fr.fileName}_sha" /><label for="${fr.fileName}_sha">Shadow</label><br><input type="radio" name="${fr.fileName}_state" value="Background" id="${fr.fileName}_bac" /><label for="${fr.fileName}_bac">Background</label>`;
+                cCategory.innerHTML = `<select name="${fr.fileName}_cat" id="${fr.fileName}_cat">`;
+                for (let category of categories) {
+                    cCategory.innerHTML += `<option value="${category}">${category}</option>`;
+                }
+                cCategory.innerHTML += `</select>`;
 
                 const iDelete = document.getElementById(`${fr.fileName}_del`);
                 iDelete.addEventListener("click", (event) => { deleteCharacterRow(event, fr.fileName) });
@@ -47,8 +56,10 @@ file.onchange = () => {
                 for (let iState of iStates) {
                     iState.addEventListener("click", (event) => { updateImageState(event, fr.fileName) });
                 }
+                const iCategory = document.getElementById(`${fr.fileName}_cat`);
+                iCategory.addEventListener("change", (event) => { updateCharacterCategory(event, fr.fileName) });
 
-                characterImages[fr.fileName] = { image: fr.result, scale: 75, hor: 50, ver: 50, state: "Reveal" };
+                characterImages[fr.fileName] = { image: fr.result, scale: 75, hor: 50, ver: 50, state: "Reveal", category: "" };
             }
             fr.readAsDataURL(fileToLoad);
         }
@@ -88,6 +99,11 @@ function deleteCharacterRow(e, name) {
     const index = e.target.parentNode.parentNode.rowIndex;
     characterTable.deleteRow(index);
     delete characterImages[name];
+    processCanvas();
+}
+
+function updateCharacterCategory(e, name) {
+    characterImages[name].category = e.target.value;
     processCanvas();
 }
 
@@ -202,12 +218,26 @@ function drawToCanvas(canvasToDrawTo, drawScale) {
     // Draw the bottom text
     if (themeText) {
         const tLine1 = 1 - (2 * (1 - vertFactor) / 3);
+        const tLine2 = 1 - (1 - vertFactor) / 3;
         ctx.fillStyle = document.getElementById("SH_Color").value;
         ctx.fillRect(0, canvasToDrawTo.height * vertFactor, canvasToDrawTo.width, canvasToDrawTo.height * (1 - vertFactor));
+
         ctx.fillStyle = document.getElementById("BG_Color").value;
         ctx.font = '30px Comic Sans';
         ctx.textAlign = 'center';
         ctx.fillText(themeText, canvasToDrawTo.width / 2, canvasToDrawTo.height * tLine1);
+
+        let categoryText = "";
+        for (let category of categories) {
+            let count = 0;
+            for (let character of characterImages){
+                if (characterImages[character].category == category){
+                    count++;
+                }
+            }
+            categoryText += `${category}: ${count}\t`;
+        }
+        ctx.fillText(categoryText.trim(), canvasToDrawTo.width / 2, canvasToDrawTo.height * tLine2);
     }
 }
 

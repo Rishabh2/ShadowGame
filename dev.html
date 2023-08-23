@@ -27,7 +27,7 @@
         }
 
         .editing {
-            margin: auto auto auto 610px;
+            margin: auto auto auto 620px;
             float: right;
             overflow-y: scroll;
             position: fixed;
@@ -40,8 +40,8 @@
             border-radius: 2px;
             color: red;
         }
-        
-        input#Download {
+
+        input.canvasButton {
             float: right;
         }
 
@@ -67,7 +67,8 @@
             <div>
                 <label for="Theme">Theme: </label>
                 <input type="text" name="Theme" id="Theme" />
-                <input type="button" value="Download" id="Download">
+                <input type="button" value="Refresh" id="Refresh" class="canvasButton">
+                <input type="button" value="Download" id="Download" class="canvasButton">
             </div>
             <div>
                 <canvas id="canvas" width="800" height="800"></canvas>
@@ -91,6 +92,7 @@
                         <th>Horizontal Position</th>
                         <th>Vertical Position</th>
                         <th>State</th>
+                        <th>Category</th>
                     </tr>
                 </table>
             </div>
