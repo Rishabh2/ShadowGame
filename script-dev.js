@@ -248,12 +248,16 @@ function drawToCanvas(canvasToDrawTo, drawScale) {
                 if (tabCount % 6 == 0) {
                     categoryText += '\n';
                 } else {
-                    categoryText += '\t';
+                    categoryText += "  ";
                 }
             }
         }
+        var lineheight = 25;
+        var lines = categoryText.split('\n');
         ctx.font = '20px Comic Sans';
-        ctx.fillText(categoryText.trim(), canvasToDrawTo.width / 2, canvasToDrawTo.height * tLine2);
+        for (var i = 0; i < lines.length; i++) {
+            c.fillText(lines[i].trim(), canvasToDrawTo.width / 2, canvasToDrawTo.height * tLine2 + (i * lineheight));
+        }
     }
 }
 
