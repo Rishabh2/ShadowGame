@@ -195,13 +195,13 @@ function drawToCanvas(canvasToDrawTo, drawScale) {
                 const tempContext = tempCanvas.getContext('2d');
                 tempContext.drawImage(image, 0, 0, imageW, imageH); // Pre-scale image data
                 let imgd = tempContext.getImageData(0, 0, imageW, imageH);
-                const C = -50;
+                const C = -20;
                 const F = 259 * (255 + C) / (255 * (259 - C));
                 for (let i = 0; i < imgd.data.length; i += 4) {
                     imgd.data[i + 0] = truncate(F * imgd.data[i + 0] - 128) + 128;
                     imgd.data[i + 1] = truncate(F * imgd.data[i + 1] - 128) + 128;
                     imgd.data[i + 2] = truncate(F * imgd.data[i + 2] - 128) + 128;
-                    imgd.data[i + 3] = 255 * Math.round(imgd.data[i + 3] / 255);
+                    imgd.data[i + 3] = imgd.data[i + 3] * 0.7;
                 }
                 tempContext.putImageData(imgd, 0, 0);
                 ctx.drawImage(tempCanvas, imageX, imageY);
