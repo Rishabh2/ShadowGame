@@ -15,7 +15,7 @@
             image-rendering: crisp-edges;
             -ms-interpolation-mode: nearest-neighbor;
             border: 1px solid black;
-            width: 800px;
+            width: 600px;
             height: 600px;
         }
 
@@ -27,7 +27,7 @@
         }
 
         .editing {
-            margin: auto auto auto 810px;
+            margin: auto auto auto 620px;
             float: right;
             overflow-y: scroll;
             position: fixed;
@@ -41,6 +41,10 @@
             color: red;
         }
 
+        input.canvasButton {
+            float: right;
+        }
+
         table,
         th,
         td {
@@ -48,7 +52,7 @@
             border-collapse: collapse;
         }
     </style>
-    <h1>Shadow Game: Version Beta 0.1</h1>
+    <h1>Shadow Game: Version Beta 0.2</h1>
     <h6>Upload images with transparent backgrounds and move them around to make a shadow game. Contact @h2owsome on
         Discord if you have issues. Use <a href="https://remove.bg">remove.bg</a> to remove backgrounds from images.
     </h6>
@@ -61,10 +65,13 @@
     <div>
         <div class="container">
             <div>
-                <canvas id="canvas" width="800" height="600"></canvas>
+                <label for="Theme">Theme: </label>
+                <input type="text" name="Theme" id="Theme" />
+                <input type="button" value="Refresh" id="Refresh" class="canvasButton">
+                <input type="button" value="Download" id="Download" class="canvasButton">
             </div>
             <div>
-                <input type="button" value="Download" id="Download">
+                <canvas id="canvas" width="800" height="800"></canvas>
             </div>
         </div>
         <div class="editing">
@@ -85,6 +92,7 @@
                         <th>Horizontal Position</th>
                         <th>Vertical Position</th>
                         <th>State</th>
+                        <th>Category</th>
                     </tr>
                 </table>
             </div>

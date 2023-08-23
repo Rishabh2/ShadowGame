@@ -1,11 +1,14 @@
 const file = document.getElementById("fileIn"); // Add file button
 const characterTable = document.getElementById("characterTable");
 const canvas = document.getElementById("canvas"); // Canvas
+const categories = ['Anime', 'Animated Film', 'Animated TV', 'Book', 'Comics', 'Live Action Film', 'Live Action TV', 'Video Game', 'Other'];
 
 document.getElementById("Shadow_All").addEventListener("click", () => { updateChars("Shadowed") });
 document.getElementById("Reveal_All").addEventListener("click", () => { updateChars("Reveal") });
 document.getElementById("Background_All").addEventListener("click", () => { updateChars("Background") });
 document.getElementById("Download").addEventListener("click", createHDImage);
+document.getElementById("Refresh").addEventListener("click", processCanvas);
+document.getElementById("Theme").addEventListener("input", processCanvas);
 
 let characterImages = {};
 
@@ -25,15 +28,22 @@ file.onchange = () => {
                 const cHor = row.insertCell();
                 const cVer = row.insertCell();
                 const cState = row.insertCell();
+                const cCategory = row.insertCell();
 
                 // Populate each cell with the associate elements.
 
                 console.log("Create Cells", fr.fileName);
                 cName.innerHTML = `<button class="link" id="${fr.fileName}_del">X</button> ${fr.fileName.replace(/\.[^/.]+$/, "")}`;
-                cScale.innerHTML = `<input type="range" min="0" max="200" value="100" class="slider" id="${fr.fileName}_scale">`;
-                cHor.innerHTML = `<input type="range" min="0" max="100" value="50" class="slider" id="${fr.fileName}_hor">`;
-                cVer.innerHTML = `<input type="range" min="0" max="100" value="50" class="slider" id="${fr.fileName}_ver">`;
-                cState.innerHTML = `<input type="radio" name="${fr.fileName}_state" value="Reveal" id="${fr.fileName}_rev" checked="checked"><label for="${fr.fileName}_rev">Reveal</label><br><input type="radio" name="${fr.fileName}_state" value="Shadowed" id="${fr.fileName}_sha"><label for="${fr.fileName}_sha">Shadow</label><br><input type="radio" name="${fr.fileName}_state" value="Background" id="${fr.fileName}_bac"><label for="${fr.fileName}_bac">Background</label>`;
+                cScale.innerHTML = `<input type="range" min="0" max="150" value="75" class="slider" id="${fr.fileName}_scale" />`;
+                cHor.innerHTML = `<input type="range" min="0" max="100" value="50" class="slider" id="${fr.fileName}_hor" />`;
+                cVer.innerHTML = `<input type="range" min="0" max="100" value="50" class="slider" id="${fr.fileName}_ver" />`;
+                cState.innerHTML = `<input type="radio" name="${fr.fileName}_state" value="Reveal" id="${fr.fileName}_rev" checked="checked" /><label for="${fr.fileName}_rev">Reveal</label><br><input type="radio" name="${fr.fileName}_state" value="Shadowed" id="${fr.fileName}_sha" /><label for="${fr.fileName}_sha">Shadow</label><br><input type="radio" name="${fr.fileName}_state" value="Background" id="${fr.fileName}_bac" /><label for="${fr.fileName}_bac">Background</label>`;
+                let catString = `<select name="${fr.fileName}_cat" id="${fr.fileName}_cat">`;
+                for (let category of categories) {
+                    catString += `<option value="${category}">${category}</option>`;
+                }
+                catString += `</select>`;
+                cCategory.innerHTML = catString;
 
                 const iDelete = document.getElementById(`${fr.fileName}_del`);
                 iDelete.addEventListener("click", (event) => { deleteCharacterRow(event, fr.fileName) });
@@ -47,8 +57,10 @@ file.onchange = () => {
                 for (let iState of iStates) {
                     iState.addEventListener("click", (event) => { updateImageState(event, fr.fileName) });
                 }
+                const iCategory = document.getElementById(`${fr.fileName}_cat`);
+                iCategory.addEventListener("change", (event) => { updateCharacterCategory(event, fr.fileName) });
 
-                characterImages[fr.fileName] = { image: fr.result, scale: 100, hor: 50, ver: 50, state: "Reveal" };
+                characterImages[fr.fileName] = { image: fr.result, scale: 75, hor: 50, ver: 50, state: "Reveal", category: "" };
             }
             fr.readAsDataURL(fileToLoad);
         }
@@ -91,6 +103,11 @@ function deleteCharacterRow(e, name) {
     processCanvas();
 }
 
+function updateCharacterCategory(e, name) {
+    characterImages[name].category = e.target.value;
+    processCanvas();
+}
+
 function truncate(num) {
     if (num < 0) {
         return 0;
@@ -129,6 +146,15 @@ function drawToCanvas(canvasToDrawTo, drawScale) {
     const ctx = canvasToDrawTo.getContext('2d');
     ctx.fillStyle = document.getElementById("BG_Color").value;
     ctx.fillRect(0, 0, canvasToDrawTo.width, canvasToDrawTo.height);
+
+
+    const themeText = document.getElementById("Theme").value;
+    let vertFactor = 1;
+    if (themeText) {
+        vertFactor = 0.85; // Scale down vertical motion if theme text enabled
+    }
+
+    // Draw the characters
     sortedChars = [];
     for (let character in characterImages) {
         sortedChars.push(characterImages[character]);
@@ -140,7 +166,7 @@ function drawToCanvas(canvasToDrawTo, drawScale) {
         image.onload = () => {
             image.crossOrigin = "Anonymous";
             const imageX = characterObject.hor * canvasToDrawTo.width / 100;
-            const imageY = characterObject.ver * canvasToDrawTo.height / 100;
+            const imageY = vertFactor * characterObject.ver * canvasToDrawTo.height / 100; // only 3/4 of the height is for characters, the bottom is for the text
             const imageW = image.width * characterObject.scale * drawScale / 100;
             const imageH = image.height * characterObject.scale * drawScale / 100;
 
@@ -188,6 +214,34 @@ function drawToCanvas(canvasToDrawTo, drawScale) {
             }
         };
         image.src = characterObject.image;
+    }
+
+    // Draw the bottom text
+    if (themeText) {
+        const tLine1 = 1 - (2 * (1 - vertFactor) / 3);
+        const tLine2 = 1 - (1 - vertFactor) / 3;
+        ctx.fillStyle = document.getElementById("SH_Color").value;
+        ctx.fillRect(0, canvasToDrawTo.height * vertFactor, canvasToDrawTo.width, canvasToDrawTo.height * (1 - vertFactor));
+
+        ctx.fillStyle = document.getElementById("BG_Color").value;
+        ctx.font = '30px Comic Sans';
+        ctx.textAlign = 'center';
+        ctx.fillText(themeText, canvasToDrawTo.width / 2, canvasToDrawTo.height * tLine1);
+
+        let categoryText = "";
+        for (let category of categories) {
+            let count = 0;
+            for (let character in characterImages) {
+                if (characterImages[character].category == category) {
+                    count++;
+                }
+            }
+            if (count) {
+                categoryText += `${category}: ${count}\t`;
+            }
+        }
+        ctx.font = '20px Comic Sans';
+        ctx.fillText(categoryText.trim(), canvasToDrawTo.width / 2, canvasToDrawTo.height * tLine2);
     }
 }
 
