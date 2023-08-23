@@ -245,6 +245,7 @@ function drawToCanvas(canvasToDrawTo, drawScale) {
             if (count) {
                 categoryText += `${category}: ${active}/${count}`;
                 tabCount++;
+                console.log("Tabcount", tabCount);
                 if (tabCount % 6 == 0) {
                     categoryText += '\n';
                 } else {
@@ -256,6 +257,7 @@ function drawToCanvas(canvasToDrawTo, drawScale) {
         var lines = categoryText.split('\n');
         ctx.font = '20px Comic Sans';
         for (var i = 0; i < lines.length; i++) {
+            console.log("line", lines[i]);
             c.fillText(lines[i].trim(), canvasToDrawTo.width / 2, canvasToDrawTo.height * tLine2 + (i * lineheight));
         }
     }
