@@ -231,13 +231,16 @@ function drawToCanvas(canvasToDrawTo, drawScale) {
         let categoryText = "";
         for (let category of categories) {
             let count = 0;
-            for (let character in characterImages){
-                if (characterImages[character].category == category){
+            for (let character in characterImages) {
+                if (characterImages[character].category == category) {
                     count++;
                 }
             }
-            categoryText += `${category}: ${count}\t`;
+            if (count) {
+                categoryText += `${category}: ${count}\t`;
+            }
         }
+        ctx.font = '20px Comic Sans';
         ctx.fillText(categoryText.trim(), canvasToDrawTo.width / 2, canvasToDrawTo.height * tLine2);
     }
 }
