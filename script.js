@@ -9,6 +9,7 @@ document.getElementById("Background_All").addEventListener("click", () => { upda
 document.getElementById("Download").addEventListener("click", createHDImage);
 document.getElementById("Refresh").addEventListener("click", processCanvas);
 document.getElementById("Theme").addEventListener("input", processCanvas);
+document.getElementById("Sort").addEventListener("click", sortTable);
 
 let characterImages = {};
 
@@ -60,7 +61,7 @@ file.onchange = () => {
                 const iCategory = document.getElementById(`${fr.fileName}_cat`);
                 iCategory.addEventListener("change", (event) => { updateCharacterCategory(event, fr.fileName) });
 
-                characterImages[fr.fileName] = { image: fr.result, scale: 75, hor: 50, ver: 50, state: "Reveal", category: "" };
+                characterImages[fr.fileName] = { image: fr.result, scale: 75, hor: 50, ver: 50, state: "Reveal", category: "Anime" };
             }
             fr.readAsDataURL(fileToLoad);
         }
@@ -229,6 +230,7 @@ function drawToCanvas(canvasToDrawTo, drawScale) {
         ctx.fillText(themeText, canvasToDrawTo.width / 2, canvasToDrawTo.height * tLine1);
 
         let categoryText = "";
+        let tabCount = 0;
         for (let category of categories) {
             let count = 0;
             let active = 0;
@@ -241,11 +243,23 @@ function drawToCanvas(canvasToDrawTo, drawScale) {
                 }
             }
             if (count) {
-                categoryText += `${category}: ${active}/${count}\t`;
+                categoryText += `${category}: ${active}/${count}`;
+                tabCount++;
+                console.log("Tabcount", tabCount);
+                if (tabCount % 5 == 0) {
+                    categoryText += '\n';
+                } else {
+                    categoryText += "  ";
+                }
             }
         }
+        const lineheight = 25;
+        const lines = categoryText.split('\n');
         ctx.font = '20px Comic Sans';
-        ctx.fillText(categoryText.trim(), canvasToDrawTo.width / 2, canvasToDrawTo.height * tLine2);
+        for (let i = 0; i < lines.length; i++) {
+            console.log("line", lines[i]);
+            ctx.fillText(lines[i].trim(), canvasToDrawTo.width / 2, canvasToDrawTo.height * tLine2 + (i * lineheight));
+        }
     }
 }
 
@@ -268,4 +282,39 @@ function createHDImage() {
     a.download = 'canvas-download.png';
     // Click on the link to set off download
     a.click();
+}
+
+function sortTable() {
+    var table, rows, switching, i, x, y, shouldSwitch;
+    table = characterTable;
+    switching = true;
+    /* Make a loop that will continue until
+    no switching has been done: */
+    while (switching) {
+        // Start by saying: no switching is done:
+        switching = false;
+        rows = table.rows;
+        /* Loop through all table rows (except the
+        first, which contains table headers): */
+        for (i = 1; i < (rows.length - 1); i++) {
+            // Start by saying there should be no switching:
+            shouldSwitch = false;
+            /* Get the two elements you want to compare,
+            one from current row and one from the next: */
+            x = rows[i].getElementsByTagName("TD")[0];
+            y = rows[i + 1].getElementsByTagName("TD")[0];
+            // Check if the two rows should switch place:
+            if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+                // If so, mark as a switch and break the loop:
+                shouldSwitch = true;
+                break;
+            }
+        }
+        if (shouldSwitch) {
+            /* If a switch has been marked, make the switch
+            and mark that a switch has been done: */
+            rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+            switching = true;
+        }
+    }
 }
