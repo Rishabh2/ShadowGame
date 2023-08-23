@@ -143,15 +143,10 @@ function updateChars(value) {
     processCanvas();
 }
 
-function drawToCanvas(actualCanvasToDrawTo, drawScale) {
-    const canvasToDrawTo = document.createElement("canvas");
-    canvasToDrawTo.width = actualCanvasToDrawTo.width;
-    canvasToDrawTo.height = actualCanvasToDrawTo.height;
-
+function drawToCanvas(canvasToDrawTo, drawScale) {
     const ctx = canvasToDrawTo.getContext('2d');
     ctx.fillStyle = document.getElementById("BG_Color").value;
     ctx.fillRect(0, 0, canvasToDrawTo.width, canvasToDrawTo.height);
-
 
     const themeText = document.getElementById("Theme").value;
     let vertFactor = 1;
@@ -265,7 +260,6 @@ function drawToCanvas(actualCanvasToDrawTo, drawScale) {
             ctx.fillText(lines[i].trim(), canvasToDrawTo.width / 2, canvasToDrawTo.height * tLine2 + (i * lineheight));
         }
     }
-    actualCanvasToDrawTo.getContext('2d').drawImage(canvasToDrawTo, 0, 0);
 }
 
 function processCanvas() {
