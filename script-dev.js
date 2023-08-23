@@ -233,6 +233,7 @@ function drawToCanvas(canvasToDrawTo, drawScale) {
         for (let category of categories) {
             let count = 0;
             let active = 0;
+            let tabCount = 0;
             for (let character in characterImages) {
                 if (characterImages[character].category == category) {
                     count++;
@@ -243,7 +244,8 @@ function drawToCanvas(canvasToDrawTo, drawScale) {
             }
             if (count) {
                 categoryText += `${category}: ${active}/${count}`;
-                if (count % 6 == 0) {
+                tabCount++;
+                if (tabCount % 6 == 0) {
                     categoryText += '\n';
                 } else {
                     categoryText += '\t';
