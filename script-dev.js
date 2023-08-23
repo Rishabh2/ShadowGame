@@ -205,6 +205,7 @@ function drawToCanvas(canvasToDrawTo, drawScale) {
         ctx.fillStyle = document.getElementById("SH_Color").value;
         ctx.fillRect(0, canvasToDrawTo.height * vertFactor, canvasToDrawTo.width, canvasToDrawTo.height * (1 - vertFactor));
         ctx.fillStyle = document.getElementById("BG_Color").value;
+        ctx.font = '30px Comic Sans';
         ctx.textAlign = 'center';
         ctx.fillText(themeText, canvasToDrawTo.width / 2, canvasToDrawTo.height * tLine1);
     }
