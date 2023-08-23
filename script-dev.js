@@ -230,10 +230,10 @@ function drawToCanvas(canvasToDrawTo, drawScale) {
         ctx.fillText(themeText, canvasToDrawTo.width / 2, canvasToDrawTo.height * tLine1);
 
         let categoryText = "";
+        let tabCount = 0;
         for (let category of categories) {
             let count = 0;
             let active = 0;
-            let tabCount = 0;
             for (let character in characterImages) {
                 if (characterImages[character].category == category) {
                     count++;
