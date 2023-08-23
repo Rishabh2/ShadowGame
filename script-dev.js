@@ -232,7 +232,7 @@ function drawToCanvas(canvasToDrawTo, drawScale) {
         for (let category of categories) {
             let count = 0;
             for (let character in characterImages) {
-                if (characterImages[character].category == category) {
+                if (characterImages[character].category == category && characterImages[character].state == "Shadowed") {
                     count++;
                 }
             }
