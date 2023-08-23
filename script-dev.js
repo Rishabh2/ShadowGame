@@ -253,10 +253,10 @@ function drawToCanvas(canvasToDrawTo, drawScale) {
                 }
             }
         }
-        var lineheight = 25;
-        var lines = categoryText.split('\n');
+        const lineheight = 25;
+        const lines = categoryText.split('\n');
         ctx.font = '20px Comic Sans';
-        for (var i = 0; i < lines.length; i++) {
+        for (let i = 0; i < lines.length; i++) {
             console.log("line", lines[i]);
             ctx.fillText(lines[i].trim(), canvasToDrawTo.width / 2, canvasToDrawTo.height * tLine2 + (i * lineheight));
         }
