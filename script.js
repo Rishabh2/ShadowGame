@@ -289,7 +289,7 @@ function createHDImage() {
 }
 
 function copyHDImage() {
-    const scale = 8;
+    const scale = 1;
     const hdCanvas = document.createElement("canvas");
     hdCanvas.width = canvas.width * scale;
     hdCanvas.height = canvas.height * scale;
