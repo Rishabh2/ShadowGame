@@ -246,7 +246,7 @@ function drawToCanvas(canvasToDrawTo, drawScale) {
                 categoryText += `${category}: ${active}/${count}`;
                 tabCount++;
                 console.log("Tabcount", tabCount);
-                if (tabCount % 6 == 0) {
+                if (tabCount % 5 == 0) {
                     categoryText += '\n';
                 } else {
                     categoryText += "  ";
