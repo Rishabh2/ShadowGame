@@ -160,7 +160,9 @@ function drawToCanvas(canvasToDrawTo, drawScale) {
     for (let character in characterImages) {
         sortedChars.push(characterImages[character]);
     }
+    console.log("Presort", sortedChars);
     sortedChars.sort((a, b) => { return b.state.length - a.state.length });
+    console.log("Postsort", sortedChars);
     for (let characterObject of sortedChars) {
         const image = new Image();
 
