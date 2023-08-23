@@ -231,13 +231,17 @@ function drawToCanvas(canvasToDrawTo, drawScale) {
         let categoryText = "";
         for (let category of categories) {
             let count = 0;
+            let active = 0;
             for (let character in characterImages) {
-                if (characterImages[character].category == category && characterImages[character].state == "Shadowed") {
+                if (characterImages[character].category == category) {
                     count++;
+                    if (characterImages[character].state == "Shadowed") {
+                        active++;
+                    }
                 }
             }
             if (count) {
-                categoryText += `${category}: ${count}\t`;
+                categoryText += `${category}: ${active}/${count}\t`;
             }
         }
         ctx.font = '20px Comic Sans';
