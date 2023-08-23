@@ -143,7 +143,11 @@ function updateChars(value) {
     processCanvas();
 }
 
-function drawToCanvas(canvasToDrawTo, drawScale) {
+function drawToCanvas(actualCanvasToDrawTo, drawScale) {
+    const canvasToDrawTo = document.createElement("canvas");
+    canvasToDrawTo.width = actualCanvasToDrawTo.width;
+    canvasToDrawTo.height = actualCanvasToDrawTo.height;
+
     const ctx = canvasToDrawTo.getContext('2d');
     ctx.fillStyle = document.getElementById("BG_Color").value;
     ctx.fillRect(0, 0, canvasToDrawTo.width, canvasToDrawTo.height);
@@ -261,6 +265,7 @@ function drawToCanvas(canvasToDrawTo, drawScale) {
             ctx.fillText(lines[i].trim(), canvasToDrawTo.width / 2, canvasToDrawTo.height * tLine2 + (i * lineheight));
         }
     }
+    actualCanvasToDrawTo.getContext('2d').drawImage(canvasToDrawTo, 0, 0);
 }
 
 function processCanvas() {
