@@ -6,6 +6,7 @@ const categories = ['Anime', 'Animated Film', 'Animated TV', 'Book', 'Comics', '
 document.getElementById("Shadow_All").addEventListener("click", () => { updateChars("Shadowed") });
 document.getElementById("Reveal_All").addEventListener("click", () => { updateChars("Reveal") });
 document.getElementById("Background_All").addEventListener("click", () => { updateChars("Background") });
+document.getElementById("Copy").addEventListener("click", copyHDImage);
 document.getElementById("Download").addEventListener("click", createHDImage);
 document.getElementById("Refresh").addEventListener("click", processCanvas);
 document.getElementById("Theme").addEventListener("input", processCanvas);
@@ -285,6 +286,18 @@ function createHDImage() {
     a.download = 'canvas-download.png';
     // Click on the link to set off download
     a.click();
+}
+
+function copyHDImage() {
+    const scale = 8;
+    const hdCanvas = document.createElement("canvas");
+    hdCanvas.width = canvas.width * scale;
+    hdCanvas.height = canvas.height * scale;
+    drawToCanvas(hdCanvas, scale);
+    hdCanvas.toBlob(function (blob) {
+        const item = new ClipboardItem({ "image/png": blob });
+        navigator.clipboard.write([item]);
+    });
 }
 
 function sortTable() {
