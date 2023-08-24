@@ -6,7 +6,6 @@ const categories = ['Anime', 'Animated Film', 'Animated TV', 'Book', 'Comics', '
 document.getElementById("Shadow_All").addEventListener("click", () => { updateChars("Shadowed") });
 document.getElementById("Reveal_All").addEventListener("click", () => { updateChars("Reveal") });
 document.getElementById("Background_All").addEventListener("click", () => { updateChars("Background") });
-document.getElementById("Copy").addEventListener("click", copyHDImage);
 document.getElementById("Download").addEventListener("click", createHDImage);
 document.getElementById("Refresh").addEventListener("click", processCanvas);
 document.getElementById("Theme").addEventListener("input", processCanvas);
@@ -35,8 +34,8 @@ file.onchange = () => {
 
                 cName.innerHTML = `<button class="link" id="${fr.fileName}_del">X</button> ${fr.fileName.replace(/\.[^/.]+$/, "")}`;
                 cScale.innerHTML = `<input type="range" min="0" max="150" value="75" class="slider" id="${fr.fileName}_scale" />`;
-                cHor.innerHTML = `<input type="range" min="0" max="100" value="50" class="slider" id="${fr.fileName}_hor" />`;
-                cVer.innerHTML = `<input type="range" min="0" max="100" value="50" class="slider" id="${fr.fileName}_ver" />`;
+                cHor.innerHTML = `<input type="range" min="0" max="100" value="0" class="slider" id="${fr.fileName}_hor" />`;
+                cVer.innerHTML = `<input type="range" min="0" max="100" value="0" class="slider" id="${fr.fileName}_ver" />`;
                 cState.innerHTML = `<input type="radio" name="${fr.fileName}_state" value="Reveal" id="${fr.fileName}_rev" checked="checked" /><label for="${fr.fileName}_rev">Reveal</label><br><input type="radio" name="${fr.fileName}_state" value="Shadowed" id="${fr.fileName}_sha" /><label for="${fr.fileName}_sha">Shadow</label><br><input type="radio" name="${fr.fileName}_state" value="Background" id="${fr.fileName}_bac" /><label for="${fr.fileName}_bac">Background</label>`;
                 let catString = `<select name="${fr.fileName}_cat" id="${fr.fileName}_cat">`;
                 for (let category of categories) {
@@ -60,7 +59,7 @@ file.onchange = () => {
                 const iCategory = document.getElementById(`${fr.fileName}_cat`);
                 iCategory.addEventListener("change", (event) => { updateCharacterCategory(event, fr.fileName) });
 
-                characterImages[fr.fileName] = { image: fr.result, scale: 75, hor: 50, ver: 50, state: "Reveal", category: "Anime" };
+                characterImages[fr.fileName] = { image: fr.result, scale: 75, hor: 0, ver: 0, state: "Reveal", category: "Anime" };
             }
             fr.readAsDataURL(fileToLoad);
         }
@@ -196,13 +195,13 @@ function drawToCanvas(canvasToDrawTo, drawScale) {
                 const tempContext = tempCanvas.getContext('2d');
                 tempContext.drawImage(image, 0, 0, imageW, imageH); // Pre-scale image data
                 let imgd = tempContext.getImageData(0, 0, imageW, imageH);
-                const C = -50;
+                const C = -20;
                 const F = 259 * (255 + C) / (255 * (259 - C));
                 for (let i = 0; i < imgd.data.length; i += 4) {
                     imgd.data[i + 0] = truncate(F * imgd.data[i + 0] - 128) + 128;
                     imgd.data[i + 1] = truncate(F * imgd.data[i + 1] - 128) + 128;
                     imgd.data[i + 2] = truncate(F * imgd.data[i + 2] - 128) + 128;
-                    imgd.data[i + 3] = 255 * Math.round(imgd.data[i + 3] / 255);
+                    imgd.data[i + 3] = imgd.data[i + 3] * 0.7;
                 }
                 tempContext.putImageData(imgd, 0, 0);
                 ctx.drawImage(tempCanvas, imageX, imageY);
@@ -227,7 +226,6 @@ function drawToCanvas(canvasToDrawTo, drawScale) {
         ctx.fillText(themeText, canvasToDrawTo.width / 2, canvasToDrawTo.height * tLine1);
 
         let categoryText = "";
-        let tabCount = 0;
         for (let category of categories) {
             let count = 0;
             let active = 0;
@@ -241,8 +239,7 @@ function drawToCanvas(canvasToDrawTo, drawScale) {
             }
             if (count) {
                 categoryText += `${category}: ${active}/${count}`;
-                tabCount++;
-                if (tabCount % 5 == 0) {
+                if (categoryText.length > 70 && categoryText.indexOf('\n') == -1) {
                     categoryText += '\n';
                 } else {
                     categoryText += "  ";
