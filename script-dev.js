@@ -158,7 +158,9 @@ function drawToCanvas(canvasToDrawTo, drawScale) {
         sortedChars.push(characterImages[character]);
     }
     sortedChars.sort((a, b) => { return b.state.length - a.state.length });
+    console.log("Drawing to canvas");
     for (let characterObject of sortedChars) {
+        console.log(characterObject.category, characterObject.state);
         const image = new Image();
 
         image.onload = () => {
