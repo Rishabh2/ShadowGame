@@ -285,7 +285,7 @@ function copyHDImage() {
 }
 
 function sortTable() {
-    var table, rows, switching, i, x, y, shouldSwitch;
+    var table, rows, switching, i, x, xs, xstate, y, ys, ystate, shouldSwitch;
     table = characterTable;
     switching = true;
     /* Make a loop that will continue until
@@ -302,9 +302,21 @@ function sortTable() {
             /* Get the two elements you want to compare,
             one from current row and one from the next: */
             x = rows[i].getElementsByTagName("TD")[0];
+            xs = rows[i].getElementsByTagName("TD")[4];
             y = rows[i + 1].getElementsByTagName("TD")[0];
+            ys = rows[i + 1].getElementsByTagName("TD")[4];
+            for (let element of xs.getElementsByTagName("input")){
+                if (element.checked == true){
+                    xstate = element.value;
+                }
+            }
+            for (let element of ys.getElementsByTagName("input")){
+                if (element.checked == true){
+                    ystate = element.value;
+                }
+            }
             // Check if the two rows should switch place:
-            if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+            if ((ystate == "Shadowed" && xstate != "Shadowed") || (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase())) {
                 // If so, mark as a switch and break the loop:
                 shouldSwitch = true;
                 break;
